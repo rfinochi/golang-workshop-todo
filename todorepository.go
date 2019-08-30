@@ -1,9 +1,9 @@
 package main
 
 type Item struct {
-	ID     int    `json:"id,omitempty bson:"id,omitempty"`
-	Title  string `json:"title,omitempty" bson:"title,omitempty"`
-	IsDone bool   `json:"isdone,omitempty" bson:"isdone,omitempty"`
+	ID     int    `json:"id,omitempty bson:"id,omitempty" datastore:"id"`
+	Title  string `json:"title,omitempty" bson:"title,omitempty" datastore:"title"`
+	IsDone bool   `json:"isdone,omitempty" bson:"isdone,omitempty" datastore:"isdone"`
 }
 
 type TodoRepository interface {

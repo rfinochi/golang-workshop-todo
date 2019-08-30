@@ -61,13 +61,15 @@ func deleteItemEndpoint(c *gin.Context) {
 func createRepository() TodoRepository {
 	if (repositoryType == "Mongo"){
 		return &MongoRepository{}
+	} else if (repositoryType == "Google"){
+		return &GoogleDatastoreRepository{}
 	} else {
 		return &InMemory{}
 	}
 }
 
 func main() {
-	repositoryType = "InMemory"
+	repositoryType = "Google"
 
 	router := gin.Default()
 
