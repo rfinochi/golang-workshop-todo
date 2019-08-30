@@ -67,7 +67,7 @@ func createRepository() TodoRepository {
 }
 
 func main() {
-	repositoryType = "Mongo"
+	repositoryType = "InMemory"
 
 	router := gin.Default()
 

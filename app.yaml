@@ -3,4 +3,8 @@ runtime: go112
 env_variables:
   GOLANGORG_CHECK_COUNTRY: true
 
+handlers:
+- url: /.*
+  script: auto
+
 nobuild_files: views/
