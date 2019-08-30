@@ -1,0 +1,6 @@
+runtime: go112
+
+env_variables:
+  GOLANGORG_CHECK_COUNTRY: true
+
+nobuild_files: views/
