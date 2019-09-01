@@ -14,6 +14,9 @@ import (
 func TestCompleteApi(t *testing.T) {
 	router := SetupRouter()
 
+	performGetItems(router, t, "", true, 0)
+	performGetItem(router, t, 0, "", false)
+
 	performPostItem(router, t, `{"id":1,"title":"Test_1","isdone":true}`)
 	performGetItems(router, t, "Test_1", true, 1)
 	performGetItem(router, t, 1, "Test_1", true)
@@ -71,9 +74,11 @@ func performGetItems(r http.Handler, t *testing.T, title string, isdone bool, le
 
 	assert.Nil(t, err)
 	assert.Equal(t, len(response), length)
-	assert.Equal(t, response[0].ID, 1)
-	assert.Equal(t, response[0].Title, title)
-	assert.Equal(t, response[0].IsDone, isdone)
+	if length > 0 {
+		assert.Equal(t, response[0].ID, 1)
+		assert.Equal(t, response[0].Title, title)
+		assert.Equal(t, response[0].IsDone, isdone)
+	}
 }
 
 func performDeleteItem(r http.Handler, t *testing.T, id int) {
@@ -94,7 +99,7 @@ func performDeleteItem(r http.Handler, t *testing.T, id int) {
 func performPatchItem(r http.Handler, t *testing.T, id int, payload string) {
 	request := performRequest(r, "PATCH", fmt.Sprintf("/todo/%v", id), payload)
 
-	//assert.Equal(t, http.StatusOK, request.Code)
+	assert.Equal(t, http.StatusOK, request.Code)
 
 	var response map[string]string
 
