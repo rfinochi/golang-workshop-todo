@@ -95,6 +95,32 @@
                         }
                     }
                 }
+            }
+        },
+        "/{id}": {
+            "get": {
+                "description": "Get a to-do item by id from the data store",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a to-do item",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "To-Do Item Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.Item"
+                        }
+                    }
+                }
             },
             "delete": {
                 "description": "Delete a to-do item from the data store",
@@ -153,32 +179,6 @@
                         "description": "{\\\"message\\\": \\\"Ok\\\"}",
                         "schema": {
                             "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/{id}": {
-            "get": {
-                "description": "Get a to-do item by id from the data store",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Get a to-do item",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "To-Do Item Id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/main.Item"
                         }
                     }
                 }

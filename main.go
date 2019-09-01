@@ -102,7 +102,7 @@ func getItemsEndpoint(c *gin.Context) {
 // @Param id path int true "To-Do Item Id"
 // @Param item body main.Item true "To-Do Item"
 // @Success 200 {string} string "{\"message\": \"Ok\"}"
-// @Router / [PATCH]
+// @Router /{id} [patch]
 func updateItemEndpoint(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
@@ -123,7 +123,7 @@ func updateItemEndpoint(c *gin.Context) {
 // @Produce json
 // @Param id path int true "To-Do Item Id"
 // @Success 200 {string} string "{\"message\": \"Ok\"}"
-// @Router / [DELETE]
+// @Router /{id} [delete]
 func deleteItemEndpoint(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 

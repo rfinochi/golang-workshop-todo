@@ -23,22 +23,6 @@ info:
   version: "1.0"
 paths:
   /:
-    delete:
-      description: Delete a to-do item from the data store
-      parameters:
-      - description: To-Do Item Id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{\"message\": \"Ok\"}'
-          schema:
-            type: string
-      summary: Delete a to-do item
     get:
       description: Get all to-do items from the data store
       produces:
@@ -51,31 +35,6 @@ paths:
               $ref: '#/definitions/main.Item'
             type: array
       summary: Get all to-do items
-    patch:
-      consumes:
-      - application/json
-      description: Update a to-do item into the data store
-      parameters:
-      - description: To-Do Item Id
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: To-Do Item
-        in: body
-        name: item
-        required: true
-        schema:
-          $ref: '#/definitions/main.Item'
-          type: object
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{\"message\": \"Ok\"}'
-          schema:
-            type: string
-      summary: Update a to-do item
     post:
       consumes:
       - application/json
@@ -117,6 +76,22 @@ paths:
             type: string
       summary: Create a to-do item
   /{id}:
+    delete:
+      description: Delete a to-do item from the data store
+      parameters:
+      - description: To-Do Item Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{\"message\": \"Ok\"}'
+          schema:
+            type: string
+      summary: Delete a to-do item
     get:
       description: Get a to-do item by id from the data store
       parameters:
@@ -133,4 +108,29 @@ paths:
           schema:
             $ref: '#/definitions/main.Item'
       summary: Get a to-do item
+    patch:
+      consumes:
+      - application/json
+      description: Update a to-do item into the data store
+      parameters:
+      - description: To-Do Item Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: To-Do Item
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/main.Item'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{\"message\": \"Ok\"}'
+          schema:
+            type: string
+      summary: Update a to-do item
 swagger: "2.0"
