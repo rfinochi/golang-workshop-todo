@@ -5,3 +5,8 @@ go:
 
 git:
   depth: 1
+
+deploy:
+  provider: gae
+  keyfile: client-secret.json
+  project: golang-workshop-todo
