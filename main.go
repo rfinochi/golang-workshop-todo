@@ -48,7 +48,7 @@ func updateItemEndpoint(c *gin.Context) {
 	repo.UpdateItem(updatedItem)
 
 	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusCreated, gin.H{"message": "OK"})
+	c.JSON(http.StatusOK, gin.H{"message": "OK"})
 }
 
 func deleteItemEndpoint(c *gin.Context) {
@@ -58,7 +58,7 @@ func deleteItemEndpoint(c *gin.Context) {
 	repo.DeleteItem(id)
 
 	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusCreated, gin.H{"message": "OK"})
+	c.JSON(http.StatusOK, gin.H{"message": "OK"})
 }
 
 func createRepository() TodoRepository {
@@ -76,6 +76,18 @@ func createRepository() TodoRepository {
 func main() {
 	repositoryType = "Google"
 
+	router := SetupRouter()
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("Defaulting to port %s", port)
+	}
+
+	router.Run(fmt.Sprintf(":%s", port))
+}
+
+func SetupRouter() *gin.Engine {
 	router := gin.Default()
 
 	router.Use(static.Serve("/", static.LocalFile("./views", true)))
@@ -88,10 +100,5 @@ func main() {
 	api.PATCH("/:num", updateItemEndpoint)
 	api.DELETE("/:num", deleteItemEndpoint)
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-		log.Printf("Defaulting to port %s", port)
-	}
-	router.Run(fmt.Sprintf(":%s", port))
+	return router
 }

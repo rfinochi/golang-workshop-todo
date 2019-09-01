@@ -18,7 +18,7 @@ require (
 	github.com/mattn/go-isatty v0.0.9 // indirect
 	github.com/rogpeppe/go-internal v1.3.1 // indirect
 	github.com/stretchr/objx v0.2.0 // indirect
-	github.com/stretchr/testify v1.4.0 // indirect
+	github.com/stretchr/testify v1.4.0
 	github.com/ugorji/go v1.1.7 // indirect
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
 	github.com/xdg/stringprep v1.0.0 // indirect
