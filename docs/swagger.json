@@ -1,0 +1,204 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Sample To-Do API written in Golang for Go Programming Language Workshop.",
+        "title": "To-Do Sample API",
+        "contact": {
+            "name": "Go Programming Language Workshop",
+            "url": "https://golang-workshop.io",
+            "email": "todoapi@golang-workshop.io"
+        },
+        "license": {
+            "name": "MIT License",
+            "url": "https://opensource.org/licenses/mit-license.php"
+        },
+        "version": "1.0"
+    },
+    "host": "todo.golang-workshop.io",
+    "basePath": "/todo",
+    "paths": {
+        "/": {
+            "get": {
+                "description": "Get all to-do items from the data store",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all to-do items",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/main.Item"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Insert a to-do item into the data store",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create a to-do item",
+                "parameters": [
+                    {
+                        "description": "To-Do Item",
+                        "name": "item",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/main.Item"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\\\"message\\\": \\\"Ok\\\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Insert a to-do item into the data store",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create a to-do item",
+                "parameters": [
+                    {
+                        "description": "To-Do Item",
+                        "name": "item",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/main.Item"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\\\"message\\\": \\\"Ok\\\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a to-do item from the data store",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete a to-do item",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "To-Do Item Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\\\"message\\\": \\\"Ok\\\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update a to-do item into the data store",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update a to-do item",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "To-Do Item Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "To-Do Item",
+                        "name": "item",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/main.Item"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\\\"message\\\": \\\"Ok\\\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/{id}": {
+            "get": {
+                "description": "Get a to-do item by id from the data store",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get a to-do item",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "To-Do Item Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.Item"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.Item": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "isdone": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

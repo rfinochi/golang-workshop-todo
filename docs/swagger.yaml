@@ -1,0 +1,136 @@
+basePath: /todo
+definitions:
+  main.Item:
+    properties:
+      id:
+        type: integer
+      isdone:
+        type: boolean
+      title:
+        type: string
+    type: object
+host: todo.golang-workshop.io
+info:
+  contact:
+    email: todoapi@golang-workshop.io
+    name: Go Programming Language Workshop
+    url: https://golang-workshop.io
+  description: Sample To-Do API written in Golang for Go Programming Language Workshop.
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/mit-license.php
+  title: To-Do Sample API
+  version: "1.0"
+paths:
+  /:
+    delete:
+      description: Delete a to-do item from the data store
+      parameters:
+      - description: To-Do Item Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{\"message\": \"Ok\"}'
+          schema:
+            type: string
+      summary: Delete a to-do item
+    get:
+      description: Get all to-do items from the data store
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Item'
+            type: array
+      summary: Get all to-do items
+    patch:
+      consumes:
+      - application/json
+      description: Update a to-do item into the data store
+      parameters:
+      - description: To-Do Item Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: To-Do Item
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/main.Item'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{\"message\": \"Ok\"}'
+          schema:
+            type: string
+      summary: Update a to-do item
+    post:
+      consumes:
+      - application/json
+      description: Insert a to-do item into the data store
+      parameters:
+      - description: To-Do Item
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/main.Item'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{\"message\": \"Ok\"}'
+          schema:
+            type: string
+      summary: Create a to-do item
+    put:
+      consumes:
+      - application/json
+      description: Insert a to-do item into the data store
+      parameters:
+      - description: To-Do Item
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/main.Item'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{\"message\": \"Ok\"}'
+          schema:
+            type: string
+      summary: Create a to-do item
+  /{id}:
+    get:
+      description: Get a to-do item by id from the data store
+      parameters:
+      - description: To-Do Item Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Item'
+      summary: Get a to-do item
+swagger: "2.0"

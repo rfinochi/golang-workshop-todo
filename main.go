@@ -9,11 +9,36 @@ import (
 
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/rfinochi/golang-workshop-todo/docs"
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 )
+
+// @title To-Do Sample API
+// @version 1.0
+// @description Sample To-Do API written in Golang for Go Programming Language Workshop.
+
+// @contact.name Go Programming Language Workshop
+// @contact.url https://golang-workshop.io
+// @contact.email todoapi@golang-workshop.io
+
+// @license.name MIT License
+// @license.url https://opensource.org/licenses/mit-license.php
+
+// @host todo.golang-workshop.io
+// @BasePath /todo
 
 var repositoryType string
 
-func createItemEndpoint(c *gin.Context) {
+// postItemEndpoint godoc
+// @Summary Create a to-do item
+// @Description Insert a to-do item into the data store
+// @Accept json
+// @Produce json
+// @Param item body main.Item true "To-Do Item"
+// @Success 200 {string} string "{\"message\": \"Ok\"}"
+// @Router / [post]
+func postItemEndpoint(c *gin.Context) {
 	var newItem Item
 	c.BindJSON(&newItem)
 
@@ -24,21 +49,62 @@ func createItemEndpoint(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "OK"})
 }
 
+// putItemEndpoint godoc
+// @Summary Create a to-do item
+// @Description Insert a to-do item into the data store
+// @Accept json
+// @Produce json
+// @Param item body main.Item true "To-Do Item"
+// @Success 200 {string} string "{\"message\": \"Ok\"}"
+// @Router / [put]
+func putItemEndpoint(c *gin.Context) {
+	var newItem Item
+	c.BindJSON(&newItem)
+
+	repo := createRepository()
+	repo.CreateItem(newItem)
+
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusCreated, gin.H{"message": "OK"})
+}
+
+// getItemEndpoint godoc
+// @Summary Get a to-do item
+// @Description Get a to-do item by id from the data store
+// @Produce json
+// @Param id path int true "To-Do Item Id"
+// @Success 200 {object} main.Item
+// @Router /{id} [get]
 func getItemEndpoint(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Param("num"))
+	id, _ := strconv.Atoi(c.Param("id"))
 
 	repo := createRepository()
 	c.Header("Content-Type", "application/json")
 	c.JSON(http.StatusOK, repo.GetItem(id))
 }
 
+// getItemsEndpoint godoc
+// @Summary Get all to-do items
+// @Description Get all to-do items from the data store
+// @Produce json
+// @Success 200 {array} main.Item
+// @Router / [get]
 func getItemsEndpoint(c *gin.Context) {
 	repo := createRepository()
 	c.JSON(http.StatusOK, repo.GetItems())
 }
 
+// updateItemEndpoint godoc
+// @Summary Update a to-do item
+// @Description Update a to-do item into the data store
+// @Accept json
+// @Produce json
+// @Param id path int true "To-Do Item Id"
+// @Param item body main.Item true "To-Do Item"
+// @Success 200 {string} string "{\"message\": \"Ok\"}"
+// @Router / [PATCH]
 func updateItemEndpoint(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Param("num"))
+	id, _ := strconv.Atoi(c.Param("id"))
 
 	var updatedItem Item
 	c.BindJSON(&updatedItem)
@@ -51,8 +117,15 @@ func updateItemEndpoint(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "OK"})
 }
 
+// deleteItemEndpoint godoc
+// @Summary Delete a to-do item
+// @Description Delete a to-do item from the data store
+// @Produce json
+// @Param id path int true "To-Do Item Id"
+// @Success 200 {string} string "{\"message\": \"Ok\"}"
+// @Router / [DELETE]
 func deleteItemEndpoint(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Param("num"))
+	id, _ := strconv.Atoi(c.Param("id"))
 
 	repo := createRepository()
 	repo.DeleteItem(id)
@@ -90,15 +163,19 @@ func main() {
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
 
+	docs.SwaggerInfo.Schemes = []string{"https", "http"}
+
 	router.Use(static.Serve("/", static.LocalFile("./views", true)))
+	router.GET("/api/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	api := router.Group("/todo")
 
 	api.GET("/", getItemsEndpoint)
-	api.GET("/:num", getItemEndpoint)
-	api.POST("/", createItemEndpoint)
-	api.PATCH("/:num", updateItemEndpoint)
-	api.DELETE("/:num", deleteItemEndpoint)
+	api.GET("/:id", getItemEndpoint)
+	api.POST("/", postItemEndpoint)
+	api.PUT("/", putItemEndpoint)
+	api.PATCH("/:id", updateItemEndpoint)
+	api.DELETE("/:id", deleteItemEndpoint)
 
 	return router
 }

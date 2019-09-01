@@ -17,11 +17,11 @@ func TestCompleteApi(t *testing.T) {
 	performGetItems(router, t, "", true, 0)
 	performGetItem(router, t, 0, "", false)
 
-	performPostItem(router, t, `{"id":1,"title":"Test_1","isdone":true}`)
+	performPostItem(router, t, "POST", `{"id":1,"title":"Test_1","isdone":true}`)
 	performGetItems(router, t, "Test_1", true, 1)
 	performGetItem(router, t, 1, "Test_1", true)
 
-	performPostItem(router, t, `{"id":2,"title":"Test_2","isdone":true}`)
+	performPostItem(router, t, "PUT", `{"id":2,"title":"Test_2","isdone":true}`)
 	performGetItems(router, t, "Test_1", true, 2)
 	performGetItem(router, t, 2, "Test_2", true)
 
@@ -33,8 +33,8 @@ func TestCompleteApi(t *testing.T) {
 	performGetItem(router, t, 1, "Test_3", false)
 }
 
-func performPostItem(r http.Handler, t *testing.T, payload string) {
-	request := performRequest(r, "POST", "/todo/", payload)
+func performPostItem(r http.Handler, t *testing.T, method string, payload string) {
+	request := performRequest(r, method, "/todo/", payload)
 
 	assert.Equal(t, http.StatusCreated, request.Code)
 
@@ -114,7 +114,7 @@ func performPatchItem(r http.Handler, t *testing.T, id int, payload string) {
 func performRequest(r http.Handler, method string, path string, payload string) *httptest.ResponseRecorder {
 	var req *http.Request
 
-	if method == "POST" || method == "PATCH" {
+	if method == "POST" || method == "PATCH" || method == "PUT" {
 		req, _ = http.NewRequest(method, path, bytes.NewBuffer([]byte(payload)))
 		req.Header.Set("Content-Type", "application/json")
 	} else {
