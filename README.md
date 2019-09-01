@@ -1,5 +1,6 @@
 # Go Programming Language Workshop ToDo Sample
 
+[![Build status](https://img.shields.io/travis/rfinochi/golang-workshop-todo?style=plastic)](https://travis-ci.org/rfinochi/golang-workshop-todo)
 [![License](https://img.shields.io/github/license/rfinochi/golang-workshop-todo?style=plastic)](https://opensource.org/licenses/mit-license.php)
 
 * [Online Slide Decks](https://decks.golang-workshop.io)
