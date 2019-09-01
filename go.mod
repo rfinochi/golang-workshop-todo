@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	cloud.google.com/go v0.44.3 // indirect
+	cloud.google.com/go/datastore v1.0.0
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/contrib v0.0.0-20190526021735-7fb7810ed2a0
 	github.com/gin-gonic/gin v1.4.0
@@ -29,7 +30,7 @@ require (
 	golang.org/x/net v0.0.0-20190827160401-ba9fcec4b297
 	golang.org/x/sys v0.0.0-20190830142957-1e83adbbebd0 // indirect
 	golang.org/x/tools v0.0.0-20190830172400-56125e7d709e // indirect
-	google.golang.org/api v0.9.0 // indirect
+	google.golang.org/api v0.9.0
 	google.golang.org/appengine v1.6.2
 	google.golang.org/genproto v0.0.0-20190819201941-24fa4b261c55 // indirect
 	google.golang.org/grpc v1.23.0 // indirect

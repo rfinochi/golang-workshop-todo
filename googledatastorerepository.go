@@ -2,77 +2,84 @@ package main
 
 import (
 	"context"
+	"log"
 
 	"cloud.google.com/go/datastore"
+	"google.golang.org/api/iterator"
 )
 
 type GoogleDatastoreRepository struct {
 }
 
-func (GoogleDatastoreRepository) CreateItem(newItem Item) {
-	ctx := context.Background()
+const entityName string = "todoitem"
 
-	client, _ := datastore.NewClient(ctx, "golang-workshop-todo")
-	key := datastore.NameKey("TodoItem", string(newItem.ID), nil)
-	client.Put(ctx, key, newItem);
+func (GoogleDatastoreRepository) CreateItem(newItem Item) {
+	ctx, client := connnectToDatastore()
+
+	key := datastore.IDKey(entityName, int64(newItem.ID), nil)
+	_, err := client.Put(ctx, key, &newItem)
+	if err != nil {
+		log.Printf("CreateItem Error: '%s'", err.Error())
+	}
 }
 
 func (GoogleDatastoreRepository) UpdateItem(item Item) {
-	// update := bson.M{"$set": bson.M{"title": item.Title,"isdone": item.IsDone }}
+	ctx, client := connnectToDatastore()
 
-	// ctx, client := connnect()
-
-	// collection := client.Database("todo").Collection("items")
-	// collection.UpdateOne(ctx, Item{ID: item.ID}, update)
-
-	// disconnect(ctx,client)
+	key := datastore.IDKey(entityName, int64(item.ID), nil)
+	_, err := client.Put(ctx, key, &item)
+	if err != nil {
+		log.Printf("UpdateItem Error: '%s'", err.Error())
+	}
 }
 
 func (GoogleDatastoreRepository) GetItems() (items []Item) {
-	// ctx, client := connnect()
+	ctx, client := connnectToDatastore()
 
-	// collection := client.Database("todo").Collection("items")
-	// cursor, _ := collection.Find(ctx, bson.M{})
-
-	// defer cursor.Close(ctx)
-	// for cursor.Next(ctx) {
-	// 	var oneItem Item
-	// 	cursor.Decode(&oneItem)
-	// 	items = append(items, oneItem)
-	// }
-
-	// disconnect(ctx,client)
+	query := datastore.NewQuery("todoitem").Order("ID")
+	it := client.Run(ctx, query)
+	for {
+		var item Item
+		if _, err := it.Next(&item); err == iterator.Done {
+			break
+		} else if err != nil {
+			log.Printf("GetItems Error: '%s'", err.Error())
+		}
+		items = append(items, item)
+	}
 
 	return
 }
 
 func (GoogleDatastoreRepository) GetItem(id int) (item Item) {
-	// ctx, client := connnect()
+	ctx, client := connnectToDatastore()
 
-	// collection := client.Database("todo").Collection("items")
-	// collection.FindOne(ctx, Item{ID: id}).Decode(&item)
-	
-	// disconnect(ctx,client)
+	key := datastore.IDKey(entityName, int64(id), nil)
+	err := client.Get(ctx, key, &item)
+	if err != nil {
+		log.Printf("GetItem Error: '%s'", err.Error())
+	}
 
 	return
 }
 
 func (GoogleDatastoreRepository) DeleteItem(id int) {
-	// ctx, client := connnect()
+	ctx, client := connnectToDatastore()
 
-	// collection := client.Database("todo").Collection("items")
-	// collection.DeleteMany(ctx, Item{ID: id})
-	
-	// disconnect(ctx,client)
+	key := datastore.IDKey(entityName, int64(id), nil)
+	err := client.Delete(ctx, key)
+	if err != nil {
+		log.Printf("DeleteItem Error: '%s'", err.Error())
+	}
 }
 
-// func connnect() (context.Context, *mongo.Client) {
-// 	ctx := context.Background()
-// 	client, _ := mongo.Connect(ctx,options.Client().ApplyURI("mongodb://localhost:27017"))
+func connnectToDatastore() (context.Context, *datastore.Client) {
+	ctx := context.Background()
 
-// 	return ctx, client
-// }
+	client, err := datastore.NewClient(ctx, "golang-workshop-todo")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
-// func disconnect(ctx context.Context, client *mongo.Client) {
-// 	defer client.Disconnect(ctx)
-// }
+	return ctx, client
+}

@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/contrib/static"
@@ -13,10 +16,10 @@ var repositoryType string
 func createItemEndpoint(c *gin.Context) {
 	var newItem Item
 	c.BindJSON(&newItem)
-	
+
 	repo := createRepository()
 	repo.CreateItem(newItem)
-	
+
 	c.Header("Content-Type", "application/json")
 	c.JSON(http.StatusCreated, gin.H{"message": "OK"})
 }
@@ -30,8 +33,8 @@ func getItemEndpoint(c *gin.Context) {
 }
 
 func getItemsEndpoint(c *gin.Context) {
-	 repo := createRepository()
-	 c.JSON(http.StatusOK, repo.GetItems())
+	repo := createRepository()
+	c.JSON(http.StatusOK, repo.GetItems())
 }
 
 func updateItemEndpoint(c *gin.Context) {
@@ -39,11 +42,11 @@ func updateItemEndpoint(c *gin.Context) {
 
 	var updatedItem Item
 	c.BindJSON(&updatedItem)
-	
+
 	repo := createRepository()
 	updatedItem.ID = id
 	repo.UpdateItem(updatedItem)
-	
+
 	c.Header("Content-Type", "application/json")
 	c.JSON(http.StatusCreated, gin.H{"message": "OK"})
 }
@@ -59,9 +62,11 @@ func deleteItemEndpoint(c *gin.Context) {
 }
 
 func createRepository() TodoRepository {
-	if (repositoryType == "Mongo"){
+	repositoryType := os.Getenv("REPOSITORYTYPE")
+
+	if repositoryType == "Mongo" {
 		return &MongoRepository{}
-	} else if (repositoryType == "Google"){
+	} else if repositoryType == "Google" {
 		return &GoogleDatastoreRepository{}
 	} else {
 		return &InMemory{}
@@ -83,5 +88,10 @@ func main() {
 	api.PATCH("/:num", updateItemEndpoint)
 	api.DELETE("/:num", deleteItemEndpoint)
 
-	router.Run(":8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("Defaulting to port %s", port)
+	}
+	router.Run(fmt.Sprintf(":%s", port))
 }
