@@ -36,7 +36,7 @@ var repositoryType string
 // @Accept json
 // @Produce json
 // @Param item body main.Item true "To-Do Item"
-// @Success 200 {string} string "{\"message\": \"Ok\"}"
+// @Success 201 {string} string "{\"message\": \"Ok\"}"
 // @Router / [post]
 func postItemEndpoint(c *gin.Context) {
 	var newItem Item
@@ -55,7 +55,7 @@ func postItemEndpoint(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param item body main.Item true "To-Do Item"
-// @Success 200 {string} string "{\"message\": \"Ok\"}"
+// @Success 201 {string} string "{\"message\": \"Ok\"}"
 // @Router / [put]
 func putItemEndpoint(c *gin.Context) {
 	var newItem Item
