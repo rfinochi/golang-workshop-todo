@@ -10,8 +10,8 @@ import (
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/rfinochi/golang-workshop-todo/docs"
-	"github.com/swaggo/files"
-	"github.com/swaggo/gin-swagger"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // @title To-Do Sample API
@@ -166,7 +166,11 @@ func SetupRouter() *gin.Engine {
 	docs.SwaggerInfo.Schemes = []string{"https", "http"}
 
 	router.Use(static.Serve("/", static.LocalFile("./views", true)))
+
 	router.GET("/api/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.GET("/api", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "./api/index.html")
+	})
 
 	api := router.Group("/todo")
 
