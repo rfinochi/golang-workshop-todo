@@ -15,7 +15,7 @@
         "version": "1.0"
     },
     "host": "todo.golang-workshop.io",
-    "basePath": "/todo",
+    "basePath": "/api",
     "paths": {
         "/": {
             "get": {

@@ -1,4 +1,4 @@
-basePath: /todo
+basePath: /api
 definitions:
   main.Item:
     properties:
