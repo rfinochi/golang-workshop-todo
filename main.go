@@ -26,7 +26,7 @@ import (
 // @license.url https://opensource.org/licenses/mit-license.php
 
 // @host todo.golang-workshop.io
-// @BasePath /todo
+// @BasePath /api
 
 var repositoryType string
 
