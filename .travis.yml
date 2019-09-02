@@ -11,6 +11,7 @@ before_install:
   -in client-secret.json.enc -out client-secret.json -d
 
 before_deploy:
+- go get -u github.com/swaggo/swag/cmd/swag
 - swag init
 
 deploy:
