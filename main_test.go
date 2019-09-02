@@ -34,7 +34,7 @@ func TestCompleteApi(t *testing.T) {
 }
 
 func performPostItem(r http.Handler, t *testing.T, method string, payload string) {
-	request := performRequest(r, method, "/todo/", payload)
+	request := performRequest(r, method, "/api/", payload)
 
 	assert.Equal(t, http.StatusCreated, request.Code)
 
@@ -49,7 +49,7 @@ func performPostItem(r http.Handler, t *testing.T, method string, payload string
 }
 
 func performGetItem(r http.Handler, t *testing.T, id int, title string, isdone bool) {
-	request := performRequest(r, "GET", fmt.Sprintf("/todo/%v", id), "")
+	request := performRequest(r, "GET", fmt.Sprintf("/api/%v", id), "")
 
 	assert.Equal(t, http.StatusOK, request.Code)
 
@@ -64,7 +64,7 @@ func performGetItem(r http.Handler, t *testing.T, id int, title string, isdone b
 }
 
 func performGetItems(r http.Handler, t *testing.T, title string, isdone bool, length int) {
-	request := performRequest(r, "GET", "/todo/", "")
+	request := performRequest(r, "GET", "/api/", "")
 
 	assert.Equal(t, http.StatusOK, request.Code)
 
@@ -82,7 +82,7 @@ func performGetItems(r http.Handler, t *testing.T, title string, isdone bool, le
 }
 
 func performDeleteItem(r http.Handler, t *testing.T, id int) {
-	request := performRequest(r, "DELETE", fmt.Sprintf("/todo/%v", id), "")
+	request := performRequest(r, "DELETE", fmt.Sprintf("/api/%v", id), "")
 
 	assert.Equal(t, http.StatusOK, request.Code)
 
@@ -97,7 +97,7 @@ func performDeleteItem(r http.Handler, t *testing.T, id int) {
 }
 
 func performPatchItem(r http.Handler, t *testing.T, id int, payload string) {
-	request := performRequest(r, "PATCH", fmt.Sprintf("/todo/%v", id), payload)
+	request := performRequest(r, "PATCH", fmt.Sprintf("/api/%v", id), payload)
 
 	assert.Equal(t, http.StatusOK, request.Code)
 
