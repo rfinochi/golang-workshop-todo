@@ -166,7 +166,7 @@ func SetupRouter() *gin.Engine {
 
 	router.Use(static.Serve("/", static.LocalFile("./views", true)))
 
-	api := router.Group("/todo")
+	api := router.Group("/api")
 
 	api.GET("/", getItemsEndpoint)
 	api.GET("/:id", getItemEndpoint)
