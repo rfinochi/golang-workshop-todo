@@ -7,10 +7,12 @@ git:
   depth: 1
 
 before_install:
-- go get -u github.com/swaggo/swag/cmd/swag
-- swag init
 - openssl aes-256-cbc -K $encrypted_8bed37950213_key -iv $encrypted_8bed37950213_iv
   -in client-secret.json.enc -out client-secret.json -d
+
+before_deploy:
+- go get -u github.com/swaggo/swag/cmd/swag
+- swag init
 
 deploy:
   provider: gae
