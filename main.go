@@ -150,6 +150,7 @@ func main() {
 	repositoryType = "Google"
 
 	router := SetupRouter()
+	setupSwagger(router)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -163,14 +164,7 @@ func main() {
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
 
-	docs.SwaggerInfo.Schemes = []string{"https", "http"}
-
 	router.Use(static.Serve("/", static.LocalFile("./views", true)))
-
-	router.GET("/api/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	router.GET("/api", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "./api/index.html")
-	})
 
 	api := router.Group("/todo")
 
@@ -182,4 +176,13 @@ func SetupRouter() *gin.Engine {
 	api.DELETE("/:id", deleteItemEndpoint)
 
 	return router
+}
+
+func setupSwagger(router *gin.Engine) {
+	docs.SwaggerInfo.Schemes = []string{"https", "http"}
+
+	router.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.GET("/api-docs", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "./api-docs/index.html")
+	})
 }
