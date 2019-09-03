@@ -31,7 +31,7 @@ import (
 var repositoryType string
 
 // postItemEndpoint godoc
-// @Summary Create a to-do item xx
+// @Summary Create a to-do item
 // @Description Insert a to-do item into the data store
 // @Accept json
 // @Produce json
