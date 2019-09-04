@@ -18,17 +18,17 @@ func TestCompleteApiInMemory(t *testing.T) {
 	doAllApiRequests(t)
 }
 
-func xTestCompleteApiInMongo(t *testing.T) {
+func TestCompleteApiInMongo(t *testing.T) {
 	os.Setenv("REPOSITORYTYPE", "Mongo")
 
 	doAllApiRequests(t)
 }
 
-// func TestSwagger(t *testing.T) {
-// 	request := doRequest(SetupRouter(), "GET", "/api-docs/docs.json", "")
+func TestSwagger(t *testing.T) {
+	doRequest(SetupRouter(), "GET", "/api-docs/docs.json", "")
 
-// 	assert.Equal(t, http.StatusOK, request.Code)
-// }
+	//assert.Equal(t, http.StatusOK, doRequest(SetupRouter(), "GET", "/api-docs/docs.json", "").Code)
+}
 
 func doAllApiRequests(t *testing.T) {
 	router := SetupRouter()
