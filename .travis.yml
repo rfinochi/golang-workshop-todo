@@ -15,11 +15,15 @@ before_deploy:
 - rm  ./docs/docs.go
 - rm  ./docs/swagger.json
 - rm  ./docs/swagger.yaml
-- rm  ./LICENSE.md
+- rm  ./LICENSE
 - rm  ./README.md
 - rm  ./.travis.yml
 - go get -u github.com/swaggo/swag/cmd/swag
 - swag init
+
+before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 
 script:
   - $GOPATH/bin/goveralls -service=travis-ci
