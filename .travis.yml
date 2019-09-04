@@ -12,13 +12,20 @@ before_install:
   -in client-secret.json.enc -out client-secret.json -d
 
 before_deploy:
+- rm  ./docs/docs.go
 - rm  ./docs/swagger.json
 - rm  ./docs/swagger.yaml
+- rm  ./LICENSE.md
+- rm  ./README.md
+- rm  ./.travis.yml
 - go get -u github.com/swaggo/swag/cmd/swag
 - swag init
 
 script:
   - $GOPATH/bin/goveralls -service=travis-ci
+
+services:
+  - mongodb
 
 deploy:
   skip_cleanup: true

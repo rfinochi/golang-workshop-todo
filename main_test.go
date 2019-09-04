@@ -6,12 +6,31 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCompleteApi(t *testing.T) {
+func TestCompleteApiInMemory(t *testing.T) {
+	os.Setenv("REPOSITORYTYPE", "Memory")
+
+	PerformAllApiRequest(t)
+}
+
+func TestCompleteMongo(t *testing.T) {
+	os.Setenv("REPOSITORYTYPE", "Mongo")
+
+	PerformAllApiRequest(t)
+}
+
+func xTestSwagger(t *testing.T) {
+	request := performRequest(SetupRouter(), "GET", "/api-docs/docs.json", "")
+
+	assert.Equal(t, http.StatusOK, request.Code)
+}
+
+func PerformAllApiRequest(t *testing.T) {
 	router := SetupRouter()
 
 	performGetItems(router, t, "", true, 0)
@@ -32,14 +51,6 @@ func TestCompleteApi(t *testing.T) {
 	performGetItems(router, t, "Test_3", false, 1)
 	performGetItem(router, t, 1, "Test_3", false)
 
-}
-
-func TestSwagger(t *testing.T) {
-	performRequest(SetupRouter(), "GET", "/api-docs/docs.json", "")
-
-	//request := performRequest(SetupRouter(), "GET", "/api-docs/docs.json", "")
-
-	//assert.Equal(t, http.StatusOK, request.Code)
 }
 
 func performPostItem(r http.Handler, t *testing.T, method string, payload string) {

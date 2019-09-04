@@ -142,13 +142,11 @@ func createRepository() TodoRepository {
 	} else if repositoryType == "Google" {
 		return &GoogleDatastoreRepository{}
 	} else {
-		return &InMemory{}
+		return &Memory{}
 	}
 }
 
 func main() {
-	repositoryType = "Google"
-
 	router := SetupRouter()
 
 	port := os.Getenv("PORT")
