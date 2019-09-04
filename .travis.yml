@@ -15,10 +15,9 @@ before_deploy:
 - rm  ./docs/swagger.yaml
 - go get -u github.com/swaggo/swag/cmd/swag
 - swag init
-- cat  ./docs/swagger.json
-- cat  ./docs/swagger.yaml
 
 deploy:
+  skip_cleanup: true
   provider: gae
   keyfile: client-secret.json
   project: golang-workshop-todo
