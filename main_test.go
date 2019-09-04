@@ -15,46 +15,45 @@ import (
 func TestCompleteApiInMemory(t *testing.T) {
 	os.Setenv("REPOSITORYTYPE", "Memory")
 
-	PerformAllApiRequest(t)
+	doAllApiRequests(t)
 }
 
-func TestCompleteMongo(t *testing.T) {
+func xTestCompleteApiInMongo(t *testing.T) {
 	os.Setenv("REPOSITORYTYPE", "Mongo")
 
-	PerformAllApiRequest(t)
+	doAllApiRequests(t)
 }
 
-func xTestSwagger(t *testing.T) {
-	request := performRequest(SetupRouter(), "GET", "/api-docs/docs.json", "")
+// func TestSwagger(t *testing.T) {
+// 	request := doRequest(SetupRouter(), "GET", "/api-docs/docs.json", "")
 
-	assert.Equal(t, http.StatusOK, request.Code)
-}
+// 	assert.Equal(t, http.StatusOK, request.Code)
+// }
 
-func PerformAllApiRequest(t *testing.T) {
+func doAllApiRequests(t *testing.T) {
 	router := SetupRouter()
 
-	performGetItems(router, t, "", true, 0)
-	performGetItem(router, t, 0, "", false)
+	doGetItems(router, t, "", true, 0)
+	doGetItem(router, t, 0, "", false)
 
-	performPostItem(router, t, "POST", `{"id":1,"title":"Test_1","isdone":true}`)
-	performGetItems(router, t, "Test_1", true, 1)
-	performGetItem(router, t, 1, "Test_1", true)
+	doPostItem(router, t, "POST", `{"id":1,"title":"Test_1","isdone":true}`)
+	doGetItems(router, t, "Test_1", true, 1)
+	doGetItem(router, t, 1, "Test_1", true)
 
-	performPostItem(router, t, "PUT", `{"id":2,"title":"Test_2","isdone":true}`)
-	performGetItems(router, t, "Test_1", true, 2)
-	performGetItem(router, t, 2, "Test_2", true)
+	doPostItem(router, t, "PUT", `{"id":2,"title":"Test_2","isdone":true}`)
+	doGetItems(router, t, "Test_1", true, 2)
+	doGetItem(router, t, 2, "Test_2", true)
 
-	performDeleteItem(router, t, 2)
-	performGetItems(router, t, "Test_1", true, 1)
+	doDeleteItem(router, t, 2)
+	doGetItems(router, t, "Test_1", true, 1)
 
-	performPatchItem(router, t, 1, `{"id":1,"title":"Test_3","isdone":false}`)
-	performGetItems(router, t, "Test_3", false, 1)
-	performGetItem(router, t, 1, "Test_3", false)
-
+	doPatchItem(router, t, 1, `{"id":1,"title":"Test_3","isdone":false}`)
+	doGetItems(router, t, "Test_3", false, 1)
+	doGetItem(router, t, 1, "Test_3", false)
 }
 
-func performPostItem(r http.Handler, t *testing.T, method string, payload string) {
-	request := performRequest(r, method, "/api/", payload)
+func doPostItem(r http.Handler, t *testing.T, method string, payload string) {
+	request := doRequest(r, method, "/api/", payload)
 
 	assert.Equal(t, http.StatusCreated, request.Code)
 
@@ -68,8 +67,8 @@ func performPostItem(r http.Handler, t *testing.T, method string, payload string
 	assert.Equal(t, "OK", value)
 }
 
-func performGetItem(r http.Handler, t *testing.T, id int, title string, isdone bool) {
-	request := performRequest(r, "GET", fmt.Sprintf("/api/%v", id), "")
+func doGetItem(r http.Handler, t *testing.T, id int, title string, isdone bool) {
+	request := doRequest(r, "GET", fmt.Sprintf("/api/%v", id), "")
 
 	assert.Equal(t, http.StatusOK, request.Code)
 
@@ -83,8 +82,8 @@ func performGetItem(r http.Handler, t *testing.T, id int, title string, isdone b
 	assert.Equal(t, response.IsDone, isdone)
 }
 
-func performGetItems(r http.Handler, t *testing.T, title string, isdone bool, length int) {
-	request := performRequest(r, "GET", "/api/", "")
+func doGetItems(r http.Handler, t *testing.T, title string, isdone bool, length int) {
+	request := doRequest(r, "GET", "/api/", "")
 
 	assert.Equal(t, http.StatusOK, request.Code)
 
@@ -101,8 +100,8 @@ func performGetItems(r http.Handler, t *testing.T, title string, isdone bool, le
 	}
 }
 
-func performDeleteItem(r http.Handler, t *testing.T, id int) {
-	request := performRequest(r, "DELETE", fmt.Sprintf("/api/%v", id), "")
+func doDeleteItem(r http.Handler, t *testing.T, id int) {
+	request := doRequest(r, "DELETE", fmt.Sprintf("/api/%v", id), "")
 
 	assert.Equal(t, http.StatusOK, request.Code)
 
@@ -116,8 +115,8 @@ func performDeleteItem(r http.Handler, t *testing.T, id int) {
 	assert.Equal(t, "OK", value)
 }
 
-func performPatchItem(r http.Handler, t *testing.T, id int, payload string) {
-	request := performRequest(r, "PATCH", fmt.Sprintf("/api/%v", id), payload)
+func doPatchItem(r http.Handler, t *testing.T, id int, payload string) {
+	request := doRequest(r, "PATCH", fmt.Sprintf("/api/%v", id), payload)
 
 	assert.Equal(t, http.StatusOK, request.Code)
 
@@ -131,7 +130,7 @@ func performPatchItem(r http.Handler, t *testing.T, id int, payload string) {
 	assert.Equal(t, "OK", value)
 }
 
-func performRequest(r http.Handler, method string, path string, payload string) *httptest.ResponseRecorder {
+func doRequest(r http.Handler, method string, path string, payload string) *httptest.ResponseRecorder {
 	var req *http.Request
 
 	if method == "POST" || method == "PATCH" || method == "PUT" {
