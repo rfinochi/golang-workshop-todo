@@ -14,7 +14,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @title To-Do Sample API
+// @title To-Do Sample API xx
 // @version 1.0
 // @description Sample To-Do API written in Golang for Go Programming Language Workshop.
 
@@ -31,7 +31,7 @@ import (
 var repositoryType string
 
 // postItemEndpoint godoc
-// @Summary Create a to-do item
+// @Summary Create a to-do item xx
 // @Description Insert a to-do item into the data store
 // @Accept json
 // @Produce json

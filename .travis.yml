@@ -11,9 +11,12 @@ before_install:
   -in client-secret.json.enc -out client-secret.json -d
 
 before_deploy:
-- rm -r ./docs
+- rm  ./docs/swagger.json
+- rm  ./docs/swagger.yaml
 - go get -u github.com/swaggo/swag/cmd/swag
 - swag init
+- cat  ./docs/swagger.json
+- cat  ./docs/swagger.yaml
 
 deploy:
   provider: gae
