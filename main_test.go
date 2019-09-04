@@ -31,6 +31,15 @@ func TestCompleteApi(t *testing.T) {
 	performPatchItem(router, t, 1, `{"id":1,"title":"Test_3","isdone":false}`)
 	performGetItems(router, t, "Test_3", false, 1)
 	performGetItem(router, t, 1, "Test_3", false)
+
+}
+
+func TestSwagger(t *testing.T) {
+	performRequest(SetupRouter(), "GET", "/api-docs/docs.json", "")
+
+	//request := performRequest(SetupRouter(), "GET", "/api-docs/docs.json", "")
+
+	//assert.Equal(t, http.StatusOK, request.Code)
 }
 
 func performPostItem(r http.Handler, t *testing.T, method string, payload string) {

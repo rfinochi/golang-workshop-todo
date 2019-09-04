@@ -165,21 +165,19 @@ func SetupRouter() *gin.Engine {
 
 	router.Use(static.Serve("/", static.LocalFile("./views", true)))
 
-	api := router.Group("/api")
+	docs.SwaggerInfo.Schemes = []string{"https", "http"}
+	router.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.GET("/api-docs", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "./api-docs/index.html")
+	})
 
+	api := router.Group("/api")
 	api.GET("/", getItemsEndpoint)
 	api.GET("/:id", getItemEndpoint)
 	api.POST("/", postItemEndpoint)
 	api.PUT("/", putItemEndpoint)
 	api.PATCH("/:id", updateItemEndpoint)
 	api.DELETE("/:id", deleteItemEndpoint)
-
-	docs.SwaggerInfo.Schemes = []string{"https", "http"}
-
-	router.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	router.GET("/api-docs", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "./api-docs/index.html")
-	})
 
 	return router
 }
