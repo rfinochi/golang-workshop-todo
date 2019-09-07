@@ -163,7 +163,7 @@ func SetupRouter() *gin.Engine {
 
 	router.Use(static.Serve("/", static.LocalFile("./views", true)))
 
-	docs.SwaggerInfo.Schemes = []string{"https", "http"}
+	//docs.SwaggerInfo.Schemes = []string{"https", "http"}
 	router.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.GET("/api-docs", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "./api-docs/index.html")
