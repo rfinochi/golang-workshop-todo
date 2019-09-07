@@ -149,7 +149,7 @@ func createRepository() TodoRepository {
 func main() {
 	router := SetupRouter()
 
-    setupSwagger()
+    setupSwagger(router)
 
 	port := os.Getenv("PORT")
 	if port == "" {
