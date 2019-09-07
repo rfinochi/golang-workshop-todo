@@ -24,12 +24,6 @@ func TestCompleteApiInMongo(t *testing.T) {
 	doAllApiRequests(t)
 }
 
-func TestSwagger(t *testing.T) {
-	doRequest(SetupRouter(), "GET", "/api-docs/docs.json", "")
-
-	//assert.Equal(t, http.StatusOK, doRequest(SetupRouter(), "GET", "/api-docs/docs.json", "").Code)
-}
-
 func doAllApiRequests(t *testing.T) {
 	router := SetupRouter()
 

@@ -7,14 +7,14 @@ git:
   depth: 1
 
 before_install:
+- rm  ./docs/docs.go
+- rm  ./docs/swagger.json
+- rm  ./docs/swagger.yaml
 - go get github.com/mattn/goveralls
 - openssl aes-256-cbc -K $encrypted_8bed37950213_key -iv $encrypted_8bed37950213_iv
   -in client-secret.json.enc -out client-secret.json -d
 
 before_deploy:
-- rm  ./docs/docs.go
-- rm  ./docs/swagger.json
-- rm  ./docs/swagger.yaml
 - rm  ./LICENSE
 - rm  ./README.md
 - rm  ./.travis.yml
