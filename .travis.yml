@@ -12,7 +12,7 @@ before_install:
   -in client-secret.json.enc -out client-secret.json -d
 
 before_deploy:
-- curl 'https://goreportcard.com/checks' -H 'Accept: application/json, text/javascript, */*; q=0.01' --compressed -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' -H 'X-Requested-With: XMLHttpRequest' -H 'DNT: 1' -H 'Connection: keep-alive' -H 'Referer: https://goreportcard.com/report/github.com/rfinochi/golang-workshop-todo' --data 'repo=github.com%2Frfinochi%2Fgolang-workshop-todo'
+- curl 'https://goreportcard.com/checks' -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' -H 'X-Requested-With: XMLHttpRequest' -H 'Referer: https://goreportcard.com/report/github.com/rfinochi/golang-workshop-todo' --data 'repo=github.com%2Frfinochi%2Fgolang-workshop-todo'
 - rm  ./docs/docs.go
 - rm  ./docs/swagger.json
 - rm  ./docs/swagger.yaml
