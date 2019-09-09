@@ -15,16 +15,16 @@ import (
 func TestCompleteApiInMemory(t *testing.T) {
 	os.Setenv("REPOSITORYTYPE", "Memory")
 
-	doAllApiRequests(t)
+	doAllAPIRequests(t)
 }
 
 func TestCompleteApiInMongo(t *testing.T) {
 	os.Setenv("REPOSITORYTYPE", "Mongo")
 
-	doAllApiRequests(t)
+	doAllAPIRequests(t)
 }
 
-func doAllApiRequests(t *testing.T) {
+func doAllAPIRequests(t *testing.T) {
 	router := SetupRouter()
 
 	doGetItems(router, t, "", true, 0)

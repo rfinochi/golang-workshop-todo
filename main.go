@@ -9,7 +9,7 @@ import (
 
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-    "github.com/rfinochi/golang-workshop-todo/docs"
+	"github.com/rfinochi/golang-workshop-todo/docs"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -149,7 +149,7 @@ func createRepository() TodoRepository {
 func main() {
 	router := SetupRouter()
 
-    setupSwagger(router)
+	setupSwagger(router)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -160,12 +160,13 @@ func main() {
 	router.Run(fmt.Sprintf(":%s", port))
 }
 
+// SetupRouter godoc
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
 
 	router.Use(static.Serve("/", static.LocalFile("./views", true)))
-	
-    api := router.Group("/api")
+
+	api := router.Group("/api")
 	api.GET("/", getItemsEndpoint)
 	api.GET("/:id", getItemEndpoint)
 	api.POST("/", postItemEndpoint)
@@ -177,9 +178,9 @@ func SetupRouter() *gin.Engine {
 }
 
 func setupSwagger(router *gin.Engine) {
-    docs.SwaggerInfo.Schemes = []string{"https", "http"}
-	
-    router.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	docs.SwaggerInfo.Schemes = []string{"https", "http"}
+
+	router.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.GET("/api-docs", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "./api-docs/index.html")
 	})

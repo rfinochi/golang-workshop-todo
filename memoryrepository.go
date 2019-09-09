@@ -2,13 +2,16 @@ package main
 
 var items = []Item{}
 
+// Memory godoc
 type Memory struct {
 }
 
+// CreateItem godoc
 func (Memory) CreateItem(newItem Item) {
 	items = append(items, newItem)
 }
 
+// UpdateItem godoc
 func (Memory) UpdateItem(updatedItem Item) {
 	for i, item := range items {
 		if item.ID == updatedItem.ID {
@@ -19,10 +22,12 @@ func (Memory) UpdateItem(updatedItem Item) {
 	}
 }
 
+// GetItems godoc
 func (Memory) GetItems() []Item {
 	return items
 }
 
+// GetItem godoc
 func (Memory) GetItem(id int) Item {
 	var result Item
 
@@ -36,6 +41,7 @@ func (Memory) GetItem(id int) Item {
 	return result
 }
 
+// DeleteItem godoc
 func (Memory) DeleteItem(id int) {
 	for i, item := range items {
 		if item.ID == id {

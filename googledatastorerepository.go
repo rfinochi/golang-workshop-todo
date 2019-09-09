@@ -8,11 +8,13 @@ import (
 	"google.golang.org/api/iterator"
 )
 
+const entityName string = "todoitem"
+
+// GoogleDatastoreRepository godoc
 type GoogleDatastoreRepository struct {
 }
 
-const entityName string = "todoitem"
-
+// CreateItem godoc
 func (GoogleDatastoreRepository) CreateItem(newItem Item) {
 	ctx, client := connnectToDatastore()
 
@@ -23,6 +25,7 @@ func (GoogleDatastoreRepository) CreateItem(newItem Item) {
 	}
 }
 
+// UpdateItem godoc
 func (GoogleDatastoreRepository) UpdateItem(item Item) {
 	ctx, client := connnectToDatastore()
 
@@ -33,6 +36,7 @@ func (GoogleDatastoreRepository) UpdateItem(item Item) {
 	}
 }
 
+// GetItems godoc
 func (GoogleDatastoreRepository) GetItems() (items []Item) {
 	ctx, client := connnectToDatastore()
 
@@ -51,6 +55,7 @@ func (GoogleDatastoreRepository) GetItems() (items []Item) {
 	return
 }
 
+// GetItem godoc
 func (GoogleDatastoreRepository) GetItem(id int) (item Item) {
 	ctx, client := connnectToDatastore()
 
@@ -63,6 +68,7 @@ func (GoogleDatastoreRepository) GetItem(id int) (item Item) {
 	return
 }
 
+// DeleteItem godoc
 func (GoogleDatastoreRepository) DeleteItem(id int) {
 	ctx, client := connnectToDatastore()
 
