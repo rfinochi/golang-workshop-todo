@@ -9,8 +9,15 @@ import (
 	"os"
 	"testing"
 
+	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
+
+var router *gin.Engine
+
+func init() {
+	router = SetupRouter()
+}
 
 func TestCompleteApiInMemory(t *testing.T) {
 	os.Setenv("REPOSITORYTYPE", "Memory")
@@ -24,9 +31,16 @@ func TestCompleteApiInMongo(t *testing.T) {
 	doAllAPIRequests(t)
 }
 
-func doAllAPIRequests(t *testing.T) {
-	router := SetupRouter()
+func TestSwagger(t *testing.T) {
+	SetupSwagger(router)
 
+	request := doRequest(router, "GET", "/api-docs", "")
+
+	assert.Equal(t, 301, request.Code)
+	assert.Greater(t, len(request.Body.String()), 0)
+}
+
+func doAllAPIRequests(t *testing.T) {
 	doGetItems(router, t, "", true, 0)
 	doGetItem(router, t, 0, "", false)
 

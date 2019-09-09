@@ -30,6 +30,46 @@ import (
 
 var repositoryType string
 
+func main() {
+	router := SetupRouter()
+	SetupSwagger(router)
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("Defaulting to port %s", port)
+	}
+
+	router.Run(fmt.Sprintf(":%s", port))
+}
+
+// SetupRouter godoc
+func SetupRouter() *gin.Engine {
+	router := gin.Default()
+
+	router.Use(static.Serve("/", static.LocalFile("./views", true)))
+
+	api := router.Group("/api")
+	api.GET("/", getItemsEndpoint)
+	api.GET("/:id", getItemEndpoint)
+	api.POST("/", postItemEndpoint)
+	api.PUT("/", putItemEndpoint)
+	api.PATCH("/:id", updateItemEndpoint)
+	api.DELETE("/:id", deleteItemEndpoint)
+
+	return router
+}
+
+// SetupSwagger godoc
+func SetupSwagger(router *gin.Engine) {
+	docs.SwaggerInfo.Schemes = []string{"https", "http"}
+
+	router.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.GET("/api-docs", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "./api-docs/index.html")
+	})
+}
+
 // postItemEndpoint godoc
 // @Summary Create a to-do item
 // @Description Insert a to-do item into the data store
@@ -144,44 +184,4 @@ func createRepository() TodoRepository {
 	} else {
 		return &Memory{}
 	}
-}
-
-func main() {
-	router := SetupRouter()
-
-	setupSwagger(router)
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-		log.Printf("Defaulting to port %s", port)
-	}
-
-	router.Run(fmt.Sprintf(":%s", port))
-}
-
-// SetupRouter godoc
-func SetupRouter() *gin.Engine {
-	router := gin.Default()
-
-	router.Use(static.Serve("/", static.LocalFile("./views", true)))
-
-	api := router.Group("/api")
-	api.GET("/", getItemsEndpoint)
-	api.GET("/:id", getItemEndpoint)
-	api.POST("/", postItemEndpoint)
-	api.PUT("/", putItemEndpoint)
-	api.PATCH("/:id", updateItemEndpoint)
-	api.DELETE("/:id", deleteItemEndpoint)
-
-	return router
-}
-
-func setupSwagger(router *gin.Engine) {
-	docs.SwaggerInfo.Schemes = []string{"https", "http"}
-
-	router.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	router.GET("/api-docs", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "./api-docs/index.html")
-	})
 }
