@@ -185,6 +185,6 @@ func createRepository() TodoRepository {
 	} else if repositoryType == "Google" {
 		return &GoogleDatastoreRepository{}
 	} else {
-		return &Memory{}
+		return &MemoryRepository{}
 	}
 }

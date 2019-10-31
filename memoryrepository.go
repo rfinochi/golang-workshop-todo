@@ -3,16 +3,16 @@ package main
 var items = []Item{}
 
 // Memory godoc
-type Memory struct {
+type MemoryRepository struct {
 }
 
 // CreateItem godoc
-func (Memory) CreateItem(newItem Item) {
+func (MemoryRepository) CreateItem(newItem Item) {
 	items = append(items, newItem)
 }
 
 // UpdateItem godoc
-func (Memory) UpdateItem(updatedItem Item) {
+func (MemoryRepository) UpdateItem(updatedItem Item) {
 	for i, item := range items {
 		if item.ID == updatedItem.ID {
 			item.Title = updatedItem.Title
@@ -23,12 +23,12 @@ func (Memory) UpdateItem(updatedItem Item) {
 }
 
 // GetItems godoc
-func (Memory) GetItems() []Item {
+func (MemoryRepository) GetItems() []Item {
 	return items
 }
 
 // GetItem godoc
-func (Memory) GetItem(id int) Item {
+func (MemoryRepository) GetItem(id int) Item {
 	var result Item
 
 	for _, item := range items {
@@ -42,7 +42,7 @@ func (Memory) GetItem(id int) Item {
 }
 
 // DeleteItem godoc
-func (Memory) DeleteItem(id int) {
+func (MemoryRepository) DeleteItem(id int) {
 	for i, item := range items {
 		if item.ID == id {
 			items = append(items[:i], items[i+1:]...)
