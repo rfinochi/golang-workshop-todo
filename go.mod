@@ -1,6 +1,6 @@
 module github.com/rfinochi/golang-workshop-todo
 
-go 1.14
+go 1.13
 
 require (
 	cloud.google.com/go v0.56.0 // indirect
