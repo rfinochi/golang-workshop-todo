@@ -9,10 +9,23 @@
 [![Uptime Robot ratio (30 days)](https://img.shields.io/uptimerobot/ratio/m783377538-77d474a53864e824fc78e179?style=plastic)](https://status.golang-workshop.io)
 [![License](https://img.shields.io/github/license/rfinochi/golang-workshop-todo?style=plastic)](https://opensource.org/licenses/mit-license.php)
 
+## Go Programming Language Workshop Resources
 
 * [Online Slide Decks](https://decks.golang-workshop.io)
 * [Slide Decks](https://github.com/rfinochi/golang-workshop-decks/tree/master/content)
 * [Source Code](https://github.com/rfinochi/golang-workshop-src)
 * [To-Do Sample Web API Doc](https://todo.golang-workshop.io/api-docs/index.html)
+
+## How to Run
+
+This program can be compiled and ran localy:
+```bash
+make
+```
+
+This project also comes has been dockerized and the container can be built by running
+```bash
+make docker
+```
 
 <img src="https://blog.golang.org/gopher/gopher.png" alt="gopher" width="70"/>

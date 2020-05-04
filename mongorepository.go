@@ -2,14 +2,25 @@ package main
 
 import (
 	"context"
+	"os"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var uri string
+
 // MongoRepository godoc
 type MongoRepository struct {
+}
+
+func init() {
+	var ok bool
+
+	if uri, ok = os.LookupEnv("MONGO_URI"); !ok {
+		uri = "mongodb://localhost:27017"
+	}
 }
 
 // CreateItem godoc
@@ -77,7 +88,7 @@ func (MongoRepository) DeleteItem(id int) {
 
 func connnect() (context.Context, *mongo.Client) {
 	ctx := context.Background()
-	client, _ := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	client, _ := mongo.Connect(ctx, options.Client().ApplyURI(uri))
 
 	return ctx, client
 }

@@ -28,8 +28,6 @@ import (
 // @host todo.golang-workshop.io
 // @BasePath /api
 
-var repositoryType string
-
 func main() {
 	router := SetupRouter()
 	SetupSwagger(router)
@@ -178,7 +176,7 @@ func deleteItemEndpoint(c *gin.Context) {
 }
 
 func createRepository() TodoRepository {
-	repositoryType := os.Getenv("REPOSITORYTYPE")
+	repositoryType := os.Getenv("REPOSITORY_TYPE")
 
 	if repositoryType == "Mongo" {
 		return &MongoRepository{}
