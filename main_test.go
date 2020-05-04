@@ -20,13 +20,13 @@ func init() {
 }
 
 func TestCompleteApiInMemory(t *testing.T) {
-	os.Setenv("REPOSITORYTYPE", "Memory")
+	os.Setenv("REPOSITORY_TYPE", "Memory")
 
 	doAllAPIRequests(t)
 }
 
 func TestCompleteApiInMongo(t *testing.T) {
-	os.Setenv("REPOSITORYTYPE", "Mongo")
+	os.Setenv("REPOSITORY_TYPE", "Mongo")
 
 	doAllAPIRequests(t)
 }
