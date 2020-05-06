@@ -13,9 +13,9 @@ before_install:
 
 before_deploy:
 - curl 'https://goreportcard.com/checks' -d 'repo=github.com%2Frfinochi%2Fgolang-workshop-todo'
-- rm  ./ui/docs/docs.go
-- rm  ./ui/docs/swagger.json
-- rm  ./ui/docs/swagger.yaml
+- rm  ./docs/docs.go
+- rm  ./docs/swagger.json
+- rm  ./docs/swagger.yaml
 - rm  ./LICENSE
 - rm  ./README.md
 - rm  ./.travis.yml
