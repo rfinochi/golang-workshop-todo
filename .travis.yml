@@ -24,7 +24,7 @@ before_deploy:
 - rm ./cmd/web/main_test.go
 - rm ./cmd/web/main.go
 - rmdir ./cmd/web
-- rmdir ./cmd/
+- rmdir ./cmd
 - go get -u github.com/swaggo/swag/cmd/swag
 - swag init
 

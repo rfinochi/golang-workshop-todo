@@ -188,7 +188,7 @@ func createRepository() models.TodoRepository {
 	if repositoryType == "Mongo" {
 		return &mongo.MongoRepository{}
 	} else if repositoryType == "Google" {
-		return &google.GoogleDatastoreRepository{}
+		return &google.GoogleRepository{}
 	} else {
 		return &memory.MemoryRepository{}
 	}

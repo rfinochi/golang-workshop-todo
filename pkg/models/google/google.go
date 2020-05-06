@@ -12,12 +12,12 @@ import (
 
 const entityName string = "todoitem"
 
-// GoogleDatastoreRepository godoc
-type GoogleDatastoreRepository struct {
+// GoogleRepository godoc
+type GoogleRepository struct {
 }
 
 // CreateItem godoc
-func (GoogleDatastoreRepository) CreateItem(newItem models.Item) {
+func (GoogleRepository) CreateItem(newItem models.Item) {
 	ctx, client := connnectToDatastore()
 
 	key := datastore.IDKey(entityName, int64(newItem.ID), nil)
@@ -28,7 +28,7 @@ func (GoogleDatastoreRepository) CreateItem(newItem models.Item) {
 }
 
 // UpdateItem godoc
-func (GoogleDatastoreRepository) UpdateItem(item models.Item) {
+func (GoogleRepository) UpdateItem(item models.Item) {
 	ctx, client := connnectToDatastore()
 
 	key := datastore.IDKey(entityName, int64(item.ID), nil)
@@ -39,7 +39,7 @@ func (GoogleDatastoreRepository) UpdateItem(item models.Item) {
 }
 
 // GetItems godoc
-func (GoogleDatastoreRepository) GetItems() (items []models.Item) {
+func (GoogleRepository) GetItems() (items []models.Item) {
 	ctx, client := connnectToDatastore()
 
 	query := datastore.NewQuery("todoitem").Order("ID")
@@ -58,7 +58,7 @@ func (GoogleDatastoreRepository) GetItems() (items []models.Item) {
 }
 
 // GetItem godoc
-func (GoogleDatastoreRepository) GetItem(id int) (item models.Item) {
+func (GoogleRepository) GetItem(id int) (item models.Item) {
 	ctx, client := connnectToDatastore()
 
 	key := datastore.IDKey(entityName, int64(id), nil)
@@ -71,7 +71,7 @@ func (GoogleDatastoreRepository) GetItem(id int) (item models.Item) {
 }
 
 // DeleteItem godoc
-func (GoogleDatastoreRepository) DeleteItem(id int) {
+func (GoogleRepository) DeleteItem(id int) {
 	ctx, client := connnectToDatastore()
 
 	key := datastore.IDKey(entityName, int64(id), nil)
