@@ -9,6 +9,8 @@ import (
 	"os"
 	"testing"
 
+	models "github.com/rfinochi/golang-workshop-todo/pkg/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
@@ -20,13 +22,13 @@ func init() {
 }
 
 func TestCompleteApiInMemory(t *testing.T) {
-	os.Setenv("REPOSITORY_TYPE", "Memory")
+	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
 
 	doAllAPIRequests(t)
 }
 
 func TestCompleteApiInMongo(t *testing.T) {
-	os.Setenv("REPOSITORY_TYPE", "Mongo")
+	os.Setenv("TODO_REPOSITORY_TYPE", "Mongo")
 
 	doAllAPIRequests(t)
 }
@@ -80,7 +82,7 @@ func doGetItem(r http.Handler, t *testing.T, id int, title string, isdone bool) 
 
 	assert.Equal(t, http.StatusOK, request.Code)
 
-	var response Item
+	var response models.Item
 
 	err := json.Unmarshal([]byte(request.Body.String()), &response)
 
@@ -95,7 +97,7 @@ func doGetItems(r http.Handler, t *testing.T, title string, isdone bool, length 
 
 	assert.Equal(t, http.StatusOK, request.Code)
 
-	var response []Item
+	var response []models.Item
 
 	err := json.Unmarshal([]byte(request.Body.String()), &response)
 

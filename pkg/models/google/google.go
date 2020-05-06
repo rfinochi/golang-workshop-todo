@@ -1,8 +1,10 @@
-package main
+package google
 
 import (
 	"context"
 	"log"
+
+	models "github.com/rfinochi/golang-workshop-todo/pkg/models"
 
 	"cloud.google.com/go/datastore"
 	"google.golang.org/api/iterator"
@@ -15,7 +17,7 @@ type GoogleDatastoreRepository struct {
 }
 
 // CreateItem godoc
-func (GoogleDatastoreRepository) CreateItem(newItem Item) {
+func (GoogleDatastoreRepository) CreateItem(newItem models.Item) {
 	ctx, client := connnectToDatastore()
 
 	key := datastore.IDKey(entityName, int64(newItem.ID), nil)
@@ -26,7 +28,7 @@ func (GoogleDatastoreRepository) CreateItem(newItem Item) {
 }
 
 // UpdateItem godoc
-func (GoogleDatastoreRepository) UpdateItem(item Item) {
+func (GoogleDatastoreRepository) UpdateItem(item models.Item) {
 	ctx, client := connnectToDatastore()
 
 	key := datastore.IDKey(entityName, int64(item.ID), nil)
@@ -37,13 +39,13 @@ func (GoogleDatastoreRepository) UpdateItem(item Item) {
 }
 
 // GetItems godoc
-func (GoogleDatastoreRepository) GetItems() (items []Item) {
+func (GoogleDatastoreRepository) GetItems() (items []models.Item) {
 	ctx, client := connnectToDatastore()
 
 	query := datastore.NewQuery("todoitem").Order("ID")
 	it := client.Run(ctx, query)
 	for {
-		var item Item
+		var item models.Item
 		if _, err := it.Next(&item); err == iterator.Done {
 			break
 		} else if err != nil {
@@ -56,7 +58,7 @@ func (GoogleDatastoreRepository) GetItems() (items []Item) {
 }
 
 // GetItem godoc
-func (GoogleDatastoreRepository) GetItem(id int) (item Item) {
+func (GoogleDatastoreRepository) GetItem(id int) (item models.Item) {
 	ctx, client := connnectToDatastore()
 
 	key := datastore.IDKey(entityName, int64(id), nil)

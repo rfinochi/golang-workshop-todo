@@ -1,4 +1,4 @@
-package main
+package models
 
 // Item godoc
 type Item struct {

@@ -7,9 +7,16 @@ import (
 	"os"
 	"strconv"
 
+	models "github.com/rfinochi/golang-workshop-todo/pkg/models"
+	google "github.com/rfinochi/golang-workshop-todo/pkg/models/google"
+	memory "github.com/rfinochi/golang-workshop-todo/pkg/models/memory"
+	mongo "github.com/rfinochi/golang-workshop-todo/pkg/models/mongo"
+
+	"github.com/rfinochi/golang-workshop-todo/docs"
+
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	"github.com/rfinochi/golang-workshop-todo/docs"
+
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -48,7 +55,7 @@ func main() {
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
 
-	router.Use(static.Serve("/", static.LocalFile("./views", true)))
+	router.Use(static.Serve("/", static.LocalFile("./ui/html", true)))
 
 	api := router.Group("/api")
 	api.GET("/", getItemsEndpoint)
@@ -80,7 +87,7 @@ func SetupSwagger(router *gin.Engine) {
 // @Success 201 {string} string "{\"message\": \"Ok\"}"
 // @Router / [post]
 func postItemEndpoint(c *gin.Context) {
-	var newItem Item
+	var newItem models.Item
 	c.BindJSON(&newItem)
 
 	repo := createRepository()
@@ -99,7 +106,7 @@ func postItemEndpoint(c *gin.Context) {
 // @Success 201 {string} string "{\"message\": \"Ok\"}"
 // @Router / [put]
 func putItemEndpoint(c *gin.Context) {
-	var newItem Item
+	var newItem models.Item
 	c.BindJSON(&newItem)
 
 	repo := createRepository()
@@ -147,7 +154,7 @@ func getItemsEndpoint(c *gin.Context) {
 func updateItemEndpoint(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	var updatedItem Item
+	var updatedItem models.Item
 	c.BindJSON(&updatedItem)
 
 	repo := createRepository()
@@ -175,14 +182,14 @@ func deleteItemEndpoint(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "OK"})
 }
 
-func createRepository() TodoRepository {
-	repositoryType := os.Getenv("REPOSITORY_TYPE")
+func createRepository() models.TodoRepository {
+	repositoryType := os.Getenv("TODO_REPOSITORY_TYPE")
 
 	if repositoryType == "Mongo" {
-		return &MongoRepository{}
+		return &mongo.MongoRepository{}
 	} else if repositoryType == "Google" {
-		return &GoogleDatastoreRepository{}
+		return &google.GoogleDatastoreRepository{}
 	} else {
-		return &MemoryRepository{}
+		return &memory.MemoryRepository{}
 	}
 }

@@ -1,13 +1,21 @@
-package main
+package mongo
 
 import (
 	"context"
 	"os"
 
+	models "github.com/rfinochi/golang-workshop-todo/pkg/models"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+type Item struct {
+	ID     int    `json:"id,omitempty bson:"id,omitempty" datastore:"id"`
+	Title  string `json:"title,omitempty" bson:"title,omitempty" datastore:"title"`
+	IsDone bool   `json:"isdone,omitempty" bson:"isdone,omitempty" datastore:"isdone"`
+}
 
 var uri string
 
@@ -18,13 +26,13 @@ type MongoRepository struct {
 func init() {
 	var ok bool
 
-	if uri, ok = os.LookupEnv("MONGO_URI"); !ok {
+	if uri, ok = os.LookupEnv("TODO_MONGO_URI"); !ok {
 		uri = "mongodb://localhost:27017"
 	}
 }
 
 // CreateItem godoc
-func (MongoRepository) CreateItem(newItem Item) {
+func (MongoRepository) CreateItem(newItem models.Item) {
 	ctx, client := connnect()
 
 	collection := client.Database("todo").Collection("items")
@@ -34,7 +42,7 @@ func (MongoRepository) CreateItem(newItem Item) {
 }
 
 // UpdateItem godoc
-func (MongoRepository) UpdateItem(item Item) {
+func (MongoRepository) UpdateItem(item models.Item) {
 	update := bson.M{"$set": bson.M{"title": item.Title, "isdone": item.IsDone}}
 
 	ctx, client := connnect()
@@ -46,7 +54,7 @@ func (MongoRepository) UpdateItem(item Item) {
 }
 
 // GetItems godoc
-func (MongoRepository) GetItems() (items []Item) {
+func (MongoRepository) GetItems() (items []models.Item) {
 	ctx, client := connnect()
 
 	collection := client.Database("todo").Collection("items")
@@ -54,7 +62,7 @@ func (MongoRepository) GetItems() (items []Item) {
 
 	defer cursor.Close(ctx)
 	for cursor.Next(ctx) {
-		var oneItem Item
+		var oneItem models.Item
 		cursor.Decode(&oneItem)
 		items = append(items, oneItem)
 	}
@@ -65,7 +73,7 @@ func (MongoRepository) GetItems() (items []Item) {
 }
 
 // GetItem godoc
-func (MongoRepository) GetItem(id int) (item Item) {
+func (MongoRepository) GetItem(id int) (item models.Item) {
 	ctx, client := connnect()
 
 	collection := client.Database("todo").Collection("items")
