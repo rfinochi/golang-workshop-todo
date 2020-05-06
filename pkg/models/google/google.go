@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	models "github.com/rfinochi/golang-workshop-todo/pkg/models"
+	"github.com/rfinochi/golang-workshop-todo/pkg/models"
 
 	"cloud.google.com/go/datastore"
 	"google.golang.org/api/iterator"

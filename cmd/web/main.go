@@ -7,10 +7,10 @@ import (
 	"os"
 	"strconv"
 
-	models "github.com/rfinochi/golang-workshop-todo/pkg/models"
-	google "github.com/rfinochi/golang-workshop-todo/pkg/models/google"
-	memory "github.com/rfinochi/golang-workshop-todo/pkg/models/memory"
-	mongo "github.com/rfinochi/golang-workshop-todo/pkg/models/mongo"
+	"github.com/rfinochi/golang-workshop-todo/pkg/models"
+	"github.com/rfinochi/golang-workshop-todo/pkg/models/google"
+	"github.com/rfinochi/golang-workshop-todo/pkg/models/memory"
+	"github.com/rfinochi/golang-workshop-todo/pkg/models/mongo"
 
 	"github.com/rfinochi/golang-workshop-todo/docs"
 
@@ -83,7 +83,7 @@ func SetupSwagger(router *gin.Engine) {
 // @Description Insert a to-do item into the data store
 // @Accept json
 // @Produce json
-// @Param item body main.Item true "To-Do Item"
+// @Param item body models.Item true "To-Do Item"
 // @Success 201 {string} string "{\"message\": \"Ok\"}"
 // @Router / [post]
 func postItemEndpoint(c *gin.Context) {
@@ -102,7 +102,7 @@ func postItemEndpoint(c *gin.Context) {
 // @Description Insert a to-do item into the data store
 // @Accept json
 // @Produce json
-// @Param item body main.Item true "To-Do Item"
+// @Param item body models.Item true "To-Do Item"
 // @Success 201 {string} string "{\"message\": \"Ok\"}"
 // @Router / [put]
 func putItemEndpoint(c *gin.Context) {
@@ -121,7 +121,7 @@ func putItemEndpoint(c *gin.Context) {
 // @Description Get a to-do item by id from the data store
 // @Produce json
 // @Param id path int true "To-Do Item Id"
-// @Success 200 {object} main.Item
+// @Success 200 {object} models.Item
 // @Router /{id} [get]
 func getItemEndpoint(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
@@ -135,7 +135,7 @@ func getItemEndpoint(c *gin.Context) {
 // @Summary Get all to-do items
 // @Description Get all to-do items from the data store
 // @Produce json
-// @Success 200 {array} main.Item
+// @Success 200 {array} models.Item
 // @Router / [get]
 func getItemsEndpoint(c *gin.Context) {
 	repo := createRepository()
@@ -148,7 +148,7 @@ func getItemsEndpoint(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "To-Do Item Id"
-// @Param item body main.Item true "To-Do Item"
+// @Param item body models.Item true "To-Do Item"
 // @Success 200 {string} string "{\"message\": \"Ok\"}"
 // @Router /{id} [patch]
 func updateItemEndpoint(c *gin.Context) {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 
-	models "github.com/rfinochi/golang-workshop-todo/pkg/models"
+	"github.com/rfinochi/golang-workshop-todo/pkg/models"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"

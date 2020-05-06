@@ -13,14 +13,24 @@ before_install:
 
 before_deploy:
 - curl 'https://goreportcard.com/checks' -d 'repo=github.com%2Frfinochi%2Fgolang-workshop-todo'
-- rm  ./docs/docs.go
-- rm  ./docs/swagger.json
-- rm  ./docs/swagger.yaml
-- rm  ./LICENSE
-- rm  ./README.md
-- rm  ./.travis.yml
+- rm ./docs/docs.go
+- rm ./docs/swagger.json
+- rm ./docs/swagger.yaml
+- rm ./LICENSE
+- rm ./README.md
+- rm ./.travis.yml
 - go get -u github.com/swaggo/swag/cmd/swag
+- cd ./cmd/web 
 - swag init
+- cd ..
+- cd ..
+- cp ./cmd/web/docs.go ./docs/docs.go
+- cp ./cmd/web/swagger.json ./docs/swagger.json
+- cp ./cmd/web/swagger.yaml ./docs/swagger.yaml
+- rm ./cmd/web/docs.go
+- rm ./cmd/web/swagger.json
+- rm ./cmd/web/swagger.yaml
+- rmdir ./cmd/web/docs
 
 before_script:
   - sleep 15

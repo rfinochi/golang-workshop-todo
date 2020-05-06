@@ -1,6 +1,6 @@
 package memory
 
-import models "github.com/rfinochi/golang-workshop-todo/pkg/models"
+import "github.com/rfinochi/golang-workshop-todo/pkg/models"
 
 var items = []models.Item{}
 

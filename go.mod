@@ -3,7 +3,6 @@ module github.com/rfinochi/golang-workshop-todo
 go 1.13
 
 require (
-	github.com/rfinochi/golang-workshop-todo/docs v0.0.0
 	cloud.google.com/go v0.56.0 // indirect
 	cloud.google.com/go/datastore v1.1.0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
@@ -19,6 +18,7 @@ require (
 	github.com/kr/pty v1.1.8 // indirect
 	github.com/mailru/easyjson v0.7.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/rfinochi/golang-workshop-todo/docs v0.0.0
 	github.com/rogpeppe/go-internal v1.3.1 // indirect
 	github.com/stretchr/testify v1.4.0
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14
@@ -33,7 +33,7 @@ require (
 	golang.org/x/exp v0.0.0-20200331195152-e8c3332aa8e5 // indirect
 	golang.org/x/image v0.0.0-20190829233526-b3c06291d021 // indirect
 	golang.org/x/mobile v0.0.0-20190830201351-c6da95954960 // indirect
-	golang.org/x/net v0.0.0-20200505041828-1ed23360d12c // indirect
+	golang.org/x/net v0.0.0-20200506145744-7e3656a0809f // indirect
 	golang.org/x/sys v0.0.0-20200409092240-59c9f1ba88fa // indirect
 	golang.org/x/tools v0.0.0-20200505023115-26f46d2f7ef8 // indirect
 	google.golang.org/api v0.21.0
