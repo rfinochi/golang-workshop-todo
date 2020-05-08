@@ -22,7 +22,7 @@ before_deploy:
 - cp ./cmd/web/handlers.go ./handlers.go
 - cp ./cmd/web/helpers.go ./helpers.go
 - cp ./cmd/web/main_test.go ./main_test.go
-- cp ./cmd/web/main_test.go ./main_test.go
+- cp ./cmd/web/main.go ./main.go
 - cp ./cmd/web/routes.go ./routes.go
 - rm ./cmd/web/handlers.go
 - rm ./cmd/web/helpers.go
