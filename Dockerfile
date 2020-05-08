@@ -4,7 +4,7 @@ EXPOSE 82/tcp
 COPY . /app
 WORKDIR /app
 
-RUN go test ./cmd/web -run TestCompleteApiInMemory
+RUN go test ./cmd/web -run TestCompleteAPIInMemory
 
 ENV PORT 82 
 ENV TODO_REPOSITORY_TYPE Mongo 

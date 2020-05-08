@@ -23,16 +23,21 @@ import (
 // @Router / [post]
 func (app *application) postItemEndpoint(c *gin.Context) {
 	var newItem models.Item
-	c.BindJSON(&newItem)
+	err := c.BindJSON(&newItem)
+	if err != nil {
+		app.clientError(c.Writer, http.StatusBadRequest)
+		return
+	}
 
 	repo := createRepository()
-	err := repo.CreateItem(newItem)
+	err = repo.CreateItem(newItem)
 	if err != nil {
 		app.serverError(c.Writer, err)
-	} else {
-		c.Header("Content-Type", "application/json")
-		c.JSON(http.StatusCreated, gin.H{"message": "OK"})
+		return
 	}
+
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusCreated, gin.H{"message": "OK"})
 }
 
 // putItemEndpoint godoc
@@ -45,16 +50,21 @@ func (app *application) postItemEndpoint(c *gin.Context) {
 // @Router / [put]
 func (app *application) putItemEndpoint(c *gin.Context) {
 	var newItem models.Item
-	c.BindJSON(&newItem)
+	err := c.BindJSON(&newItem)
+	if err != nil {
+		app.clientError(c.Writer, http.StatusBadRequest)
+		return
+	}
 
 	repo := createRepository()
-	err := repo.CreateItem(newItem)
+	err = repo.CreateItem(newItem)
 	if err != nil {
 		app.serverError(c.Writer, err)
-	} else {
-		c.Header("Content-Type", "application/json")
-		c.JSON(http.StatusCreated, gin.H{"message": "OK"})
+		return
 	}
+
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusCreated, gin.H{"message": "OK"})
 }
 
 // getItemEndpoint godoc
@@ -65,16 +75,21 @@ func (app *application) putItemEndpoint(c *gin.Context) {
 // @Success 200 {object} models.Item
 // @Router /{id} [get]
 func (app *application) getItemEndpoint(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		app.clientError(c.Writer, http.StatusBadRequest)
+		return
+	}
 
 	repo := createRepository()
 	item, err := repo.GetItem(id)
 	if err != nil {
 		app.serverError(c.Writer, err)
-	} else {
-		c.Header("Content-Type", "application/json")
-		c.JSON(http.StatusOK, item)
+		return
 	}
+
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusOK, item)
 }
 
 // getItemsEndpoint godoc
@@ -103,20 +118,29 @@ func (app *application) getItemsEndpoint(c *gin.Context) {
 // @Success 200 {string} string "{\"message\": \"Ok\"}"
 // @Router /{id} [patch]
 func (app *application) updateItemEndpoint(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		app.clientError(c.Writer, http.StatusBadRequest)
+		return
+	}
 
 	var updatedItem models.Item
-	c.BindJSON(&updatedItem)
+	err = c.BindJSON(&updatedItem)
+	if err != nil {
+		app.clientError(c.Writer, http.StatusBadRequest)
+		return
+	}
 
 	repo := createRepository()
 	updatedItem.ID = id
-	err := repo.UpdateItem(updatedItem)
+	err = repo.UpdateItem(updatedItem)
 	if err != nil {
 		app.serverError(c.Writer, err)
-	} else {
-		c.Header("Content-Type", "application/json")
-		c.JSON(http.StatusOK, gin.H{"message": "OK"})
+		return
 	}
+
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusOK, gin.H{"message": "OK"})
 }
 
 // deleteItemEndpoint godoc
@@ -127,16 +151,21 @@ func (app *application) updateItemEndpoint(c *gin.Context) {
 // @Success 200 {string} string "{\"message\": \"Ok\"}"
 // @Router /{id} [delete]
 func (app *application) deleteItemEndpoint(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		app.clientError(c.Writer, http.StatusBadRequest)
+		return
+	}
 
 	repo := createRepository()
-	err := repo.DeleteItem(id)
+	err = repo.DeleteItem(id)
 	if err != nil {
 		app.serverError(c.Writer, err)
-	} else {
-		c.Header("Content-Type", "application/json")
-		c.JSON(http.StatusOK, gin.H{"message": "OK"})
+		return
 	}
+
+	c.Header("Content-Type", "application/json")
+	c.JSON(http.StatusOK, gin.H{"message": "OK"})
 }
 
 func createRepository() models.TodoRepository {

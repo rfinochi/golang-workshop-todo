@@ -33,7 +33,10 @@ func init() {
 
 // CreateItem godoc
 func (MongoRepository) CreateItem(newItem models.Item) (err error) {
-	ctx, client := connnect()
+	ctx, client, err := connnect()
+	if err != nil {
+		return
+	}
 
 	collection := client.Database("todo").Collection("items")
 	_, err = collection.InsertOne(ctx, newItem)
@@ -47,7 +50,10 @@ func (MongoRepository) CreateItem(newItem models.Item) (err error) {
 func (MongoRepository) UpdateItem(item models.Item) (err error) {
 	update := bson.M{"$set": bson.M{"title": item.Title, "isdone": item.IsDone}}
 
-	ctx, client := connnect()
+	ctx, client, err := connnect()
+	if err != nil {
+		return
+	}
 
 	collection := client.Database("todo").Collection("items")
 	_, err = collection.UpdateOne(ctx, Item{ID: item.ID}, update)
@@ -59,7 +65,10 @@ func (MongoRepository) UpdateItem(item models.Item) (err error) {
 
 // GetItems godoc
 func (MongoRepository) GetItems() (items []models.Item, err error) {
-	ctx, client := connnect()
+	ctx, client, err := connnect()
+	if err != nil {
+		return
+	}
 
 	collection := client.Database("todo").Collection("items")
 	cursor, err := collection.Find(ctx, bson.M{})
@@ -80,7 +89,10 @@ func (MongoRepository) GetItems() (items []models.Item, err error) {
 
 // GetItem godoc
 func (MongoRepository) GetItem(id int) (item models.Item, err error) {
-	ctx, client := connnect()
+	ctx, client, err := connnect()
+	if err != nil {
+		return
+	}
 
 	options := options.Find()
 	options.SetLimit(1)
@@ -102,21 +114,30 @@ func (MongoRepository) GetItem(id int) (item models.Item, err error) {
 
 // DeleteItem godoc
 func (MongoRepository) DeleteItem(id int) (err error) {
-	ctx, client := connnect()
+	ctx, client, err := connnect()
+	if err != nil {
+		return
+	}
 
 	collection := client.Database("todo").Collection("items")
 	_, err = collection.DeleteMany(ctx, Item{ID: id})
+	if err != nil {
+		return
+	}
 
 	disconnect(ctx, client)
 
-	return nil
+	return
 }
 
-func connnect() (context.Context, *mongo.Client) {
-	ctx := context.Background()
-	client, _ := mongo.Connect(ctx, options.Client().ApplyURI(uri))
+func connnect() (ctx context.Context, client *mongo.Client, err error) {
+	ctx = context.Background()
+	client, err = mongo.Connect(ctx, options.Client().ApplyURI(uri))
+	if err != nil {
+		return
+	}
 
-	return ctx, client
+	return
 }
 
 func disconnect(ctx context.Context, client *mongo.Client) {

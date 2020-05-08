@@ -34,7 +34,7 @@ func main() {
 		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
 	app.initRouter()
-	app.addApiRoutes()
+	app.addAPIRoutes()
 	app.addSwaggerRoutes()
 
 	app.infoLog.Printf("Env PORT '%s'", os.Getenv("PORT"))

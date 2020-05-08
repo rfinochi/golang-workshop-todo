@@ -16,7 +16,7 @@ func (app *application) initRouter() {
 	app.router = gin.Default()
 }
 
-func (app *application) addApiRoutes() {
+func (app *application) addAPIRoutes() {
 	if app.router != nil {
 		app.router.Use(static.Serve("/", static.LocalFile("./ui/html", true)))
 

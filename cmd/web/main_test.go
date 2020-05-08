@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCompleteApiInMemory(t *testing.T) {
+func TestCompleteAPIInMemory(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
 
 	app := &application{
@@ -23,12 +23,12 @@ func TestCompleteApiInMemory(t *testing.T) {
 		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
 	app.initRouter()
-	app.addApiRoutes()
+	app.addAPIRoutes()
 
 	doAllAPIRequests(t, app)
 }
 
-func TestCompleteApiInMongo(t *testing.T) {
+func TestCompleteAPIInMongo(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Mongo")
 
 	app := &application{
@@ -36,7 +36,7 @@ func TestCompleteApiInMongo(t *testing.T) {
 		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
 	app.initRouter()
-	app.addApiRoutes()
+	app.addAPIRoutes()
 
 	doAllAPIRequests(t, app)
 }
@@ -55,14 +55,44 @@ func TestSwagger(t *testing.T) {
 	assert.Greater(t, len(request.Body.String()), 0)
 }
 
-func TestServerError(t *testing.T) {
+func TestNotFoundError(t *testing.T) {
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
 		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
 	app.initRouter()
 
-	doError(app.router, t, http.StatusNotFound)
+	doError(app.router, t, "GET", "/api/1", "", http.StatusNotFound)
+}
+
+func TestBadRequestError(t *testing.T) {
+	app := &application{
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+	}
+	app.initRouter()
+	app.addAPIRoutes()
+
+	doError(app.router, t, "GET", "/api/bad", "", http.StatusBadRequest)
+	doError(app.router, t, "DELETE", "/api/bad", "", http.StatusBadRequest)
+	doError(app.router, t, "PATCH", "/api/bad", "", http.StatusBadRequest)
+
+	doError(app.router, t, "PATCH", "/api/1", "BAD", http.StatusBadRequest)
+	doError(app.router, t, "PUT", "/api/", "BAD", http.StatusBadRequest)
+	doError(app.router, t, "POST", "/api/", "BAD", http.StatusBadRequest)
+}
+
+func TestInternalServerError(t *testing.T) {
+	os.Setenv("TODO_REPOSITORY_TYPE", "Google")
+
+	app := &application{
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+	}
+	app.initRouter()
+	app.addAPIRoutes()
+
+	doError(app.router, t, "GET", "/api/1", "", http.StatusInternalServerError)
 }
 
 func doAllAPIRequests(t *testing.T, a *application) {
@@ -180,8 +210,8 @@ func doCleanUp(r http.Handler, t *testing.T) {
 	}
 }
 
-func doError(r http.Handler, t *testing.T, errorCode int) {
-	request := doRequest(r, "GET", "/api/1", "")
+func doError(r http.Handler, t *testing.T, method string, path string, payload string, errorCode int) {
+	request := doRequest(r, method, path, payload)
 
 	assert.Equal(t, errorCode, request.Code)
 }
