@@ -17,29 +17,27 @@ type GoogleRepository struct {
 }
 
 // CreateItem godoc
-func (GoogleRepository) CreateItem(newItem models.Item) {
+func (GoogleRepository) CreateItem(newItem models.Item) (err error) {
 	ctx, client := connnectToDatastore()
 
 	key := datastore.IDKey(entityName, int64(newItem.ID), nil)
-	_, err := client.Put(ctx, key, &newItem)
-	if err != nil {
-		log.Printf("CreateItem Error: '%s'", err.Error())
-	}
+	_, err = client.Put(ctx, key, &newItem)
+
+	return err
 }
 
 // UpdateItem godoc
-func (GoogleRepository) UpdateItem(item models.Item) {
+func (GoogleRepository) UpdateItem(item models.Item) (err error) {
 	ctx, client := connnectToDatastore()
 
 	key := datastore.IDKey(entityName, int64(item.ID), nil)
-	_, err := client.Put(ctx, key, &item)
-	if err != nil {
-		log.Printf("UpdateItem Error: '%s'", err.Error())
-	}
+	_, err = client.Put(ctx, key, &item)
+
+	return
 }
 
 // GetItems godoc
-func (GoogleRepository) GetItems() (items []models.Item) {
+func (GoogleRepository) GetItems() (items []models.Item, err error) {
 	ctx, client := connnectToDatastore()
 
 	query := datastore.NewQuery("todoitem").Order("ID")
@@ -58,11 +56,11 @@ func (GoogleRepository) GetItems() (items []models.Item) {
 }
 
 // GetItem godoc
-func (GoogleRepository) GetItem(id int) (item models.Item) {
+func (GoogleRepository) GetItem(id int) (item models.Item, err error) {
 	ctx, client := connnectToDatastore()
 
 	key := datastore.IDKey(entityName, int64(id), nil)
-	err := client.Get(ctx, key, &item)
+	err = client.Get(ctx, key, &item)
 	if err != nil {
 		log.Printf("GetItem Error: '%s'", err.Error())
 	}
@@ -71,14 +69,11 @@ func (GoogleRepository) GetItem(id int) (item models.Item) {
 }
 
 // DeleteItem godoc
-func (GoogleRepository) DeleteItem(id int) {
+func (GoogleRepository) DeleteItem(id int) error {
 	ctx, client := connnectToDatastore()
 
 	key := datastore.IDKey(entityName, int64(id), nil)
-	err := client.Delete(ctx, key)
-	if err != nil {
-		log.Printf("DeleteItem Error: '%s'", err.Error())
-	}
+	return client.Delete(ctx, key)
 }
 
 func connnectToDatastore() (context.Context, *datastore.Client) {

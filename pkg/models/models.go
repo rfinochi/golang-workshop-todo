@@ -9,9 +9,9 @@ type Item struct {
 
 // TodoRepository godoc
 type TodoRepository interface {
-	CreateItem(Item)
-	UpdateItem(Item)
-	GetItems() []Item
-	GetItem(int) Item
-	DeleteItem(int)
+	CreateItem(Item) error
+	UpdateItem(Item) error
+	GetItems() ([]Item, error)
+	GetItem(int) (Item, error)
+	DeleteItem(int) error
 }

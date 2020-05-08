@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -11,70 +12,66 @@ import (
 
 	models "github.com/rfinochi/golang-workshop-todo/pkg/models"
 
-	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
-
-var router *gin.Engine
-
-func init() {
-	router = SetupRouter()
-}
 
 func TestCompleteApiInMemory(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
 
-	doAllAPIRequests(t)
+	app := &application{
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+	}
+	app.router = app.routes()
+
+	doAllAPIRequests(t, app)
 }
 
 func TestCompleteApiInMongo(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Mongo")
 
-	doAllAPIRequests(t)
+	app := &application{
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+	}
+	app.router = app.routes()
+
+	doAllAPIRequests(t, app)
 }
 
 func TestSwagger(t *testing.T) {
-	SetupSwagger(router)
+	app := &application{
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+	}
+	app.router = app.routes()
 
-	request := doRequest(router, "GET", "/api-docs", "")
+	request := doRequest(app.router, "GET", "/api-docs", "")
 
 	assert.Equal(t, 301, request.Code)
 	assert.Greater(t, len(request.Body.String()), 0)
 }
 
-func doAllAPIRequests(t *testing.T) {
-	doGetItems(router, t, "", true, 0)
-	doGetItem(router, t, 0, "", false)
+func doAllAPIRequests(t *testing.T, a *application) {
+	doCleanUp(a.router, t)
 
-	doPostItem(router, t, "POST", `{"id":1,"title":"Test_1","isdone":true}`)
-	doGetItems(router, t, "Test_1", true, 1)
-	doGetItem(router, t, 1, "Test_1", true)
+	doGetItems(a.router, t, "", true, 0)
+	doGetItem(a.router, t, 0, "", false)
 
-	doPostItem(router, t, "PUT", `{"id":2,"title":"Test_2","isdone":true}`)
-	doGetItems(router, t, "Test_1", true, 2)
-	doGetItem(router, t, 2, "Test_2", true)
+	doPostItem(a.router, t, "POST", `{"id":1,"title":"Test_1","isdone":true}`)
+	doGetItems(a.router, t, "Test_1", true, 1)
+	doGetItem(a.router, t, 1, "Test_1", true)
 
-	doDeleteItem(router, t, 2)
-	doGetItems(router, t, "Test_1", true, 1)
+	doPostItem(a.router, t, "PUT", `{"id":2,"title":"Test_2","isdone":true}`)
+	doGetItems(a.router, t, "Test_1", true, 2)
+	doGetItem(a.router, t, 2, "Test_2", true)
 
-	doPatchItem(router, t, 1, `{"id":1,"title":"Test_3","isdone":false}`)
-	doGetItems(router, t, "Test_3", false, 1)
-	doGetItem(router, t, 1, "Test_3", false)
-}
+	doDeleteItem(a.router, t, 2)
+	doGetItems(a.router, t, "Test_1", true, 1)
 
-func doPostItem(r http.Handler, t *testing.T, method string, payload string) {
-	request := doRequest(r, method, "/api/", payload)
-
-	assert.Equal(t, http.StatusCreated, request.Code)
-
-	var response map[string]string
-
-	err := json.Unmarshal([]byte(request.Body.String()), &response)
-	value, exists := response["message"]
-
-	assert.Nil(t, err)
-	assert.True(t, exists)
-	assert.Equal(t, "OK", value)
+	doPatchItem(a.router, t, 1, `{"id":1,"title":"Test_3","isdone":false}`)
+	doGetItems(a.router, t, "Test_3", false, 1)
+	doGetItem(a.router, t, 1, "Test_3", false)
 }
 
 func doGetItem(r http.Handler, t *testing.T, id int, title string, isdone bool) {
@@ -110,10 +107,10 @@ func doGetItems(r http.Handler, t *testing.T, title string, isdone bool, length 
 	}
 }
 
-func doDeleteItem(r http.Handler, t *testing.T, id int) {
-	request := doRequest(r, "DELETE", fmt.Sprintf("/api/%v", id), "")
+func doPostItem(r http.Handler, t *testing.T, method string, payload string) {
+	request := doRequest(r, method, "/api/", payload)
 
-	assert.Equal(t, http.StatusOK, request.Code)
+	assert.Equal(t, http.StatusCreated, request.Code)
 
 	var response map[string]string
 
@@ -138,6 +135,36 @@ func doPatchItem(r http.Handler, t *testing.T, id int, payload string) {
 	assert.Nil(t, err)
 	assert.True(t, exists)
 	assert.Equal(t, "OK", value)
+}
+
+func doDeleteItem(r http.Handler, t *testing.T, id int) {
+	request := doRequest(r, "DELETE", fmt.Sprintf("/api/%v", id), "")
+
+	assert.Equal(t, http.StatusOK, request.Code)
+
+	var response map[string]string
+
+	err := json.Unmarshal([]byte(request.Body.String()), &response)
+	value, exists := response["message"]
+
+	assert.Nil(t, err)
+	assert.True(t, exists)
+	assert.Equal(t, "OK", value)
+}
+
+func doCleanUp(r http.Handler, t *testing.T) {
+	request := doRequest(r, "GET", "/api/", "")
+
+	assert.Equal(t, http.StatusOK, request.Code)
+
+	var response []models.Item
+	err := json.Unmarshal([]byte(request.Body.String()), &response)
+
+	assert.Nil(t, err)
+
+	for i := 0; i < len(response); i++ {
+		doDeleteItem(r, t, response[i].ID)
+	}
 }
 
 func doRequest(r http.Handler, method string, path string, payload string) *httptest.ResponseRecorder {

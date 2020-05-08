@@ -32,39 +32,45 @@ func init() {
 }
 
 // CreateItem godoc
-func (MongoRepository) CreateItem(newItem models.Item) {
+func (MongoRepository) CreateItem(newItem models.Item) (err error) {
 	ctx, client := connnect()
 
 	collection := client.Database("todo").Collection("items")
-	collection.InsertOne(ctx, newItem)
+	_, err = collection.InsertOne(ctx, newItem)
 
 	disconnect(ctx, client)
+
+	return
 }
 
 // UpdateItem godoc
-func (MongoRepository) UpdateItem(item models.Item) {
+func (MongoRepository) UpdateItem(item models.Item) (err error) {
 	update := bson.M{"$set": bson.M{"title": item.Title, "isdone": item.IsDone}}
 
 	ctx, client := connnect()
 
 	collection := client.Database("todo").Collection("items")
-	collection.UpdateOne(ctx, Item{ID: item.ID}, update)
+	_, err = collection.UpdateOne(ctx, Item{ID: item.ID}, update)
 
 	disconnect(ctx, client)
+
+	return
 }
 
 // GetItems godoc
-func (MongoRepository) GetItems() (items []models.Item) {
+func (MongoRepository) GetItems() (items []models.Item, err error) {
 	ctx, client := connnect()
 
 	collection := client.Database("todo").Collection("items")
-	cursor, _ := collection.Find(ctx, bson.M{})
+	cursor, err := collection.Find(ctx, bson.M{})
 
-	defer cursor.Close(ctx)
-	for cursor.Next(ctx) {
-		var oneItem models.Item
-		cursor.Decode(&oneItem)
-		items = append(items, oneItem)
+	if err == nil {
+		defer cursor.Close(ctx)
+		for cursor.Next(ctx) {
+			var oneItem models.Item
+			cursor.Decode(&oneItem)
+			items = append(items, oneItem)
+		}
 	}
 
 	disconnect(ctx, client)
@@ -73,11 +79,21 @@ func (MongoRepository) GetItems() (items []models.Item) {
 }
 
 // GetItem godoc
-func (MongoRepository) GetItem(id int) (item models.Item) {
+func (MongoRepository) GetItem(id int) (item models.Item, err error) {
 	ctx, client := connnect()
 
+	options := options.Find()
+	options.SetLimit(1)
+
 	collection := client.Database("todo").Collection("items")
-	collection.FindOne(ctx, Item{ID: id}).Decode(&item)
+	cursor, err := collection.Find(ctx, Item{ID: id}, options)
+
+	if err == nil {
+		defer cursor.Close(ctx)
+		for cursor.Next(ctx) {
+			cursor.Decode(&item)
+		}
+	}
 
 	disconnect(ctx, client)
 
@@ -85,13 +101,15 @@ func (MongoRepository) GetItem(id int) (item models.Item) {
 }
 
 // DeleteItem godoc
-func (MongoRepository) DeleteItem(id int) {
+func (MongoRepository) DeleteItem(id int) (err error) {
 	ctx, client := connnect()
 
 	collection := client.Database("todo").Collection("items")
-	collection.DeleteMany(ctx, Item{ID: id})
+	_, err = collection.DeleteMany(ctx, Item{ID: id})
 
 	disconnect(ctx, client)
+
+	return nil
 }
 
 func connnect() (context.Context, *mongo.Client) {
