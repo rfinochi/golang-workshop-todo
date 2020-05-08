@@ -18,6 +18,9 @@ type GoogleRepository struct {
 // CreateItem godoc
 func (GoogleRepository) CreateItem(newItem models.Item) (err error) {
 	ctx, client, err := connnectToDatastore()
+	if err != nil {
+		return
+	}
 
 	key := datastore.IDKey(entityName, int64(newItem.ID), nil)
 	_, err = client.Put(ctx, key, &newItem)
@@ -28,6 +31,9 @@ func (GoogleRepository) CreateItem(newItem models.Item) (err error) {
 // UpdateItem godoc
 func (GoogleRepository) UpdateItem(item models.Item) (err error) {
 	ctx, client, err := connnectToDatastore()
+	if err != nil {
+		return
+	}
 
 	key := datastore.IDKey(entityName, int64(item.ID), nil)
 	_, err = client.Put(ctx, key, &item)
@@ -38,12 +44,16 @@ func (GoogleRepository) UpdateItem(item models.Item) (err error) {
 // GetItems godoc
 func (GoogleRepository) GetItems() (items []models.Item, err error) {
 	ctx, client, err := connnectToDatastore()
+	if err != nil {
+		return
+	}
 
 	query := datastore.NewQuery("todoitem").Order("ID")
 	it := client.Run(ctx, query)
 	for {
 		var item models.Item
 		if _, err = it.Next(&item); err == iterator.Done {
+			err = nil
 			break
 		} else if err != nil {
 			return
@@ -57,9 +67,15 @@ func (GoogleRepository) GetItems() (items []models.Item, err error) {
 // GetItem godoc
 func (GoogleRepository) GetItem(id int) (item models.Item, err error) {
 	ctx, client, err := connnectToDatastore()
+	if err != nil {
+		return
+	}
 
 	key := datastore.IDKey(entityName, int64(id), nil)
 	err = client.Get(ctx, key, &item)
+	if err == datastore.ErrNoSuchEntity {
+		err = nil
+	}
 
 	return
 }
@@ -67,9 +83,14 @@ func (GoogleRepository) GetItem(id int) (item models.Item, err error) {
 // DeleteItem godoc
 func (GoogleRepository) DeleteItem(id int) (err error) {
 	ctx, client, err := connnectToDatastore()
+	if err != nil {
+		return
+	}
 
 	key := datastore.IDKey(entityName, int64(id), nil)
-	return client.Delete(ctx, key)
+	err = client.Delete(ctx, key)
+
+	return
 }
 
 func connnectToDatastore() (ctx context.Context, client *datastore.Client, err error) {

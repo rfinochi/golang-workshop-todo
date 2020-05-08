@@ -92,7 +92,11 @@ func TestInternalServerError(t *testing.T) {
 	app.initRouter()
 	app.addAPIRoutes()
 
+	doError(app.router, t, "GET", "/api/", "", http.StatusInternalServerError)
 	doError(app.router, t, "GET", "/api/1", "", http.StatusInternalServerError)
+	doError(app.router, t, "PATCH", "/api/1", `{"id":1,"title":"Test_1","isdone":true}`, http.StatusInternalServerError)
+	doError(app.router, t, "POST", "/api/", `{"id":1,"title":"Test_1","isdone":true}`, http.StatusInternalServerError)
+	doError(app.router, t, "PUT", "/api/", `{"id":1,"title":"Test_1","isdone":true}`, http.StatusInternalServerError)
 }
 
 func doAllAPIRequests(t *testing.T, a *application) {
