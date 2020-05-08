@@ -76,8 +76,8 @@ func (app *application) putItemEndpoint(c *gin.Context) {
 // @Router /{id} [get]
 func (app *application) getItemEndpoint(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		app.clientError(c.Writer, http.StatusBadRequest)
+	if err != nil || id < 1 {
+		app.notFound(c.Writer)
 		return
 	}
 
@@ -119,8 +119,8 @@ func (app *application) getItemsEndpoint(c *gin.Context) {
 // @Router /{id} [patch]
 func (app *application) updateItemEndpoint(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		app.clientError(c.Writer, http.StatusBadRequest)
+	if err != nil || id < 1 {
+		app.notFound(c.Writer)
 		return
 	}
 
@@ -152,8 +152,8 @@ func (app *application) updateItemEndpoint(c *gin.Context) {
 // @Router /{id} [delete]
 func (app *application) deleteItemEndpoint(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		app.clientError(c.Writer, http.StatusBadRequest)
+	if err != nil || id < 1 {
+		app.notFound(c.Writer)
 		return
 	}
 

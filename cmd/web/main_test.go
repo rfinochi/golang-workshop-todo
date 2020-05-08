@@ -55,16 +55,6 @@ func TestSwagger(t *testing.T) {
 	assert.Greater(t, len(request.Body.String()), 0)
 }
 
-func TestNotFoundError(t *testing.T) {
-	app := &application{
-		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
-	}
-	app.initRouter()
-
-	doError(app.router, t, "GET", "/api/1", "", http.StatusNotFound)
-}
-
 func TestBadRequestError(t *testing.T) {
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
@@ -73,15 +63,36 @@ func TestBadRequestError(t *testing.T) {
 	app.initRouter()
 	app.addAPIRoutes()
 
-	doError(app.router, t, "GET", "/api/bad", "", http.StatusBadRequest)
-	doError(app.router, t, "DELETE", "/api/bad", "", http.StatusBadRequest)
-	doError(app.router, t, "PATCH", "/api/bad", "", http.StatusBadRequest)
-
-	doError(app.router, t, "PATCH", "/api/1", "BAD", http.StatusBadRequest)
 	doError(app.router, t, "PUT", "/api/", "BAD", http.StatusBadRequest)
 	doError(app.router, t, "POST", "/api/", "BAD", http.StatusBadRequest)
+	doError(app.router, t, "PATCH", "/api/1", "BAD", http.StatusBadRequest)
 }
 
+func TestNotFoundError(t *testing.T) {
+	app := &application{
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+	}
+	app.initRouter()
+	app.addAPIRoutes()
+
+	doError(app.router, t, "GET", "/api/bad", "", http.StatusNotFound)
+	doError(app.router, t, "DELETE", "/api/bad", "", http.StatusNotFound)
+	doError(app.router, t, "PATCH", "/api/bad", "", http.StatusNotFound)
+	doError(app.router, t, "GET", "/api/-1", "", http.StatusNotFound)
+	doError(app.router, t, "DELETE", "/api/-1", "", http.StatusNotFound)
+	doError(app.router, t, "PATCH", "/api/-1", "", http.StatusNotFound)
+}
+
+func TestPageNotFoundError(t *testing.T) {
+	app := &application{
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+	}
+	app.initRouter()
+
+	doError(app.router, t, "GET", "/api/1", "", http.StatusNotFound)
+}
 func TestInternalServerError(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Google")
 
@@ -92,11 +103,12 @@ func TestInternalServerError(t *testing.T) {
 	app.initRouter()
 	app.addAPIRoutes()
 
+	doError(app.router, t, "POST", "/api/", `{"id":1,"title":"Test_1","isdone":true}`, http.StatusInternalServerError)
+	doError(app.router, t, "PUT", "/api/", `{"id":1,"title":"Test_1","isdone":true}`, http.StatusInternalServerError)
 	doError(app.router, t, "GET", "/api/", "", http.StatusInternalServerError)
 	doError(app.router, t, "GET", "/api/1", "", http.StatusInternalServerError)
 	doError(app.router, t, "PATCH", "/api/1", `{"id":1,"title":"Test_1","isdone":true}`, http.StatusInternalServerError)
-	doError(app.router, t, "POST", "/api/", `{"id":1,"title":"Test_1","isdone":true}`, http.StatusInternalServerError)
-	doError(app.router, t, "PUT", "/api/", `{"id":1,"title":"Test_1","isdone":true}`, http.StatusInternalServerError)
+	doError(app.router, t, "DELETE", "/api/1", "", http.StatusInternalServerError)
 }
 
 func doAllAPIRequests(t *testing.T, a *application) {
