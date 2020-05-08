@@ -115,7 +115,6 @@ func doAllAPIRequests(t *testing.T, a *application) {
 	doCleanUp(a.router, t)
 
 	doGetItems(a.router, t, "", true, 0)
-	doGetItem(a.router, t, 0, "", false)
 
 	doPostItem(a.router, t, "POST", `{"id":1,"title":"Test_1","isdone":true}`)
 	doGetItems(a.router, t, "Test_1", true, 1)
