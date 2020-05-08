@@ -12,24 +12,30 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func (app *application) routes() *gin.Engine {
-	router := gin.Default()
+func (app *application) initRouter() {
+	app.router = gin.Default()
+}
 
-	router.Use(static.Serve("/", static.LocalFile("./ui/html", true)))
+func (app *application) addApiRoutes() {
+	if app.router != nil {
+		app.router.Use(static.Serve("/", static.LocalFile("./ui/html", true)))
 
-	api := router.Group("/api")
-	api.GET("/", app.getItemsEndpoint)
-	api.GET("/:id", app.getItemEndpoint)
-	api.POST("/", app.postItemEndpoint)
-	api.PUT("/", app.putItemEndpoint)
-	api.PATCH("/:id", app.updateItemEndpoint)
-	api.DELETE("/:id", app.deleteItemEndpoint)
+		api := app.router.Group("/api")
+		api.GET("/", app.getItemsEndpoint)
+		api.GET("/:id", app.getItemEndpoint)
+		api.POST("/", app.postItemEndpoint)
+		api.PUT("/", app.putItemEndpoint)
+		api.PATCH("/:id", app.updateItemEndpoint)
+		api.DELETE("/:id", app.deleteItemEndpoint)
+	}
+}
 
-	docs.SwaggerInfo.Schemes = []string{"https", "http"}
-	router.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	router.GET("/api-docs", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "./api-docs/index.html")
-	})
-
-	return router
+func (app *application) addSwaggerRoutes() {
+	if app.router != nil {
+		docs.SwaggerInfo.Schemes = []string{"https", "http"}
+		app.router.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+		app.router.GET("/api-docs", func(c *gin.Context) {
+			c.Redirect(http.StatusMovedPermanently, "./api-docs/index.html")
+		})
+	}
 }

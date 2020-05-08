@@ -33,9 +33,9 @@ func main() {
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
 		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
-	app.router = app.routes()
-
-	os.Setenv("TODO_REPOSITORY_TYPE", "Mongo")
+	app.initRouter()
+	app.addApiRoutes()
+	app.addSwaggerRoutes()
 
 	app.infoLog.Printf("Env PORT '%s'", os.Getenv("PORT"))
 	app.infoLog.Printf("Env TODO_REPOSITORY_TYPE '%s'", os.Getenv("TODO_REPOSITORY_TYPE"))

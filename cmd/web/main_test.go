@@ -22,7 +22,8 @@ func TestCompleteApiInMemory(t *testing.T) {
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
 		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
-	app.router = app.routes()
+	app.initRouter()
+	app.addApiRoutes()
 
 	doAllAPIRequests(t, app)
 }
@@ -34,7 +35,8 @@ func TestCompleteApiInMongo(t *testing.T) {
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
 		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
-	app.router = app.routes()
+	app.initRouter()
+	app.addApiRoutes()
 
 	doAllAPIRequests(t, app)
 }
@@ -44,12 +46,23 @@ func TestSwagger(t *testing.T) {
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
 		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
-	app.router = app.routes()
+	app.initRouter()
+	app.addSwaggerRoutes()
 
 	request := doRequest(app.router, "GET", "/api-docs", "")
 
 	assert.Equal(t, 301, request.Code)
 	assert.Greater(t, len(request.Body.String()), 0)
+}
+
+func TestServerError(t *testing.T) {
+	app := &application{
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+	}
+	app.initRouter()
+
+	doError(app.router, t, http.StatusNotFound)
 }
 
 func doAllAPIRequests(t *testing.T, a *application) {
@@ -165,6 +178,12 @@ func doCleanUp(r http.Handler, t *testing.T) {
 	for i := 0; i < len(response); i++ {
 		doDeleteItem(r, t, response[i].ID)
 	}
+}
+
+func doError(r http.Handler, t *testing.T, errorCode int) {
+	request := doRequest(r, "GET", "/api/1", "")
+
+	assert.Equal(t, errorCode, request.Code)
 }
 
 func doRequest(r http.Handler, method string, path string, payload string) *httptest.ResponseRecorder {
