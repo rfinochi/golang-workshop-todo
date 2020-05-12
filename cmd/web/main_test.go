@@ -19,8 +19,9 @@ func TestCompleteAPIInMemory(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
 
 	app := &application{
-		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		itemRepository: createItemRepository(),
 	}
 	app.initRouter()
 	app.addAPIRoutes()
@@ -32,8 +33,9 @@ func TestCompleteAPIInMongo(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Mongo")
 
 	app := &application{
-		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		itemRepository: createItemRepository(),
 	}
 	app.initRouter()
 	app.addAPIRoutes()
@@ -42,6 +44,8 @@ func TestCompleteAPIInMongo(t *testing.T) {
 }
 
 func TestSwagger(t *testing.T) {
+	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
+
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
 		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
@@ -56,9 +60,12 @@ func TestSwagger(t *testing.T) {
 }
 
 func TestBadRequestError(t *testing.T) {
+	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
+
 	app := &application{
-		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		itemRepository: createItemRepository(),
 	}
 	app.initRouter()
 	app.addAPIRoutes()
@@ -69,9 +76,12 @@ func TestBadRequestError(t *testing.T) {
 }
 
 func TestNotFoundError(t *testing.T) {
+	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
+
 	app := &application{
-		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		itemRepository: createItemRepository(),
 	}
 	app.initRouter()
 	app.addAPIRoutes()
@@ -85,9 +95,12 @@ func TestNotFoundError(t *testing.T) {
 }
 
 func TestPageNotFoundError(t *testing.T) {
+	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
+
 	app := &application{
-		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		itemRepository: createItemRepository(),
 	}
 	app.initRouter()
 
@@ -97,8 +110,9 @@ func TestInternalServerError(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Google")
 
 	app := &application{
-		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		itemRepository: createItemRepository(),
 	}
 	app.initRouter()
 	app.addAPIRoutes()

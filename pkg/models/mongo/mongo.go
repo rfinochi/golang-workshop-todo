@@ -11,16 +11,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type Item struct {
-	ID     int    `json:"id,omitempty bson:"id,omitempty" datastore:"id"`
-	Title  string `json:"title,omitempty" bson:"title,omitempty" datastore:"title"`
-	IsDone bool   `json:"isdone,omitempty" bson:"isdone,omitempty" datastore:"isdone"`
-}
-
 var uri string
 
-// MongoRepository godoc
-type MongoRepository struct {
+// ItemRepository godoc
+type ItemRepository struct {
 }
 
 func init() {
@@ -32,7 +26,7 @@ func init() {
 }
 
 // CreateItem godoc
-func (MongoRepository) CreateItem(newItem models.Item) (err error) {
+func (ItemRepository) CreateItem(newItem models.Item) (err error) {
 	ctx, client, err := connnect()
 	if err != nil {
 		return
@@ -47,7 +41,7 @@ func (MongoRepository) CreateItem(newItem models.Item) (err error) {
 }
 
 // UpdateItem godoc
-func (MongoRepository) UpdateItem(item models.Item) (err error) {
+func (ItemRepository) UpdateItem(item models.Item) (err error) {
 	update := bson.M{"$set": bson.M{"title": item.Title, "isdone": item.IsDone}}
 
 	ctx, client, err := connnect()
@@ -56,7 +50,7 @@ func (MongoRepository) UpdateItem(item models.Item) (err error) {
 	}
 
 	collection := client.Database("todo").Collection("items")
-	_, err = collection.UpdateOne(ctx, Item{ID: item.ID}, update)
+	_, err = collection.UpdateOne(ctx, models.Item{ID: item.ID}, update)
 
 	disconnect(ctx, client)
 
@@ -64,7 +58,7 @@ func (MongoRepository) UpdateItem(item models.Item) (err error) {
 }
 
 // GetItems godoc
-func (MongoRepository) GetItems() (items []models.Item, err error) {
+func (ItemRepository) GetItems() (items []models.Item, err error) {
 	ctx, client, err := connnect()
 	if err != nil {
 		return
@@ -88,7 +82,7 @@ func (MongoRepository) GetItems() (items []models.Item, err error) {
 }
 
 // GetItem godoc
-func (MongoRepository) GetItem(id int) (item models.Item, err error) {
+func (ItemRepository) GetItem(id int) (item models.Item, err error) {
 	ctx, client, err := connnect()
 	if err != nil {
 		return
@@ -98,7 +92,7 @@ func (MongoRepository) GetItem(id int) (item models.Item, err error) {
 	options.SetLimit(1)
 
 	collection := client.Database("todo").Collection("items")
-	cursor, err := collection.Find(ctx, Item{ID: id}, options)
+	cursor, err := collection.Find(ctx, models.Item{ID: id}, options)
 
 	if err == nil {
 		defer cursor.Close(ctx)
@@ -113,14 +107,14 @@ func (MongoRepository) GetItem(id int) (item models.Item, err error) {
 }
 
 // DeleteItem godoc
-func (MongoRepository) DeleteItem(id int) (err error) {
+func (ItemRepository) DeleteItem(id int) (err error) {
 	ctx, client, err := connnect()
 	if err != nil {
 		return
 	}
 
 	collection := client.Database("todo").Collection("items")
-	_, err = collection.DeleteMany(ctx, Item{ID: id})
+	_, err = collection.DeleteMany(ctx, models.Item{ID: id})
 	if err != nil {
 		return
 	}

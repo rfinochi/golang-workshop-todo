@@ -1,5 +1,9 @@
 package models
 
+import (
+	"errors"
+)
+
 // Item godoc
 type Item struct {
 	ID     int    `json:"id,omitempty bson:"id,omitempty" datastore:"id"`
@@ -7,8 +11,13 @@ type Item struct {
 	IsDone bool   `json:"isdone,omitempty" bson:"isdone,omitempty" datastore:"isdone"`
 }
 
-// TodoRepository godoc
-type TodoRepository interface {
+var (
+	// ErrNoRecord godoc
+	ErrNoRecord = errors.New("models: no matching record found")
+)
+
+// ItemRepository godoc
+type ItemRepository interface {
 	CreateItem(Item) error
 	UpdateItem(Item) error
 	GetItems() ([]Item, error)
