@@ -28,10 +28,8 @@ before_deploy:
 - rm ./cmd/web/main_test.go
 - rm ./cmd/web/main.go
 - rm ./cmd/web/routes.go
-- rm ./pkg/models/memory/memory.go
 - rmdir ./cmd/web
 - rmdir ./cmd
-- rmdir ./pkg/models/memory
 - go get -u github.com/swaggo/swag/cmd/swag
 - swag init
 
