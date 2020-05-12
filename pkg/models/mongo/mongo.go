@@ -11,18 +11,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var uri string
-
 // ItemRepository godoc
 type ItemRepository struct {
-}
-
-func init() {
-	var ok bool
-
-	if uri, ok = os.LookupEnv("TODO_MONGO_URI"); !ok {
-		uri = "mongodb://localhost:27017"
-	}
 }
 
 // CreateItem godoc
@@ -126,7 +116,7 @@ func (ItemRepository) DeleteItem(id int) (err error) {
 
 func connnect() (ctx context.Context, client *mongo.Client, err error) {
 	ctx = context.Background()
-	client, err = mongo.Connect(ctx, options.Client().ApplyURI(uri))
+	client, err = mongo.Connect(ctx, options.Client().ApplyURI(getURI()))
 	if err != nil {
 		return
 	}
@@ -136,4 +126,14 @@ func connnect() (ctx context.Context, client *mongo.Client, err error) {
 
 func disconnect(ctx context.Context, client *mongo.Client) {
 	defer client.Disconnect(ctx)
+}
+
+func getURI() (uri string) {
+	var ok bool
+
+	if uri, ok = os.LookupEnv("TODO_MONGO_URI"); !ok {
+		uri = "mongodb://localhost:27017"
+	}
+
+	return
 }
