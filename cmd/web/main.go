@@ -4,21 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-
-	"github.com/gin-gonic/gin"
-
-	"github.com/rfinochi/golang-workshop-todo/pkg/models"
-	"github.com/rfinochi/golang-workshop-todo/pkg/models/google"
-	"github.com/rfinochi/golang-workshop-todo/pkg/models/memory"
-	"github.com/rfinochi/golang-workshop-todo/pkg/models/mongo"
 )
-
-type application struct {
-	errorLog       *log.Logger
-	infoLog        *log.Logger
-	router         *gin.Engine
-	itemRepository models.ItemRepository
-}
 
 // @title To-Do Sample API
 // @version 1.0
@@ -36,10 +22,10 @@ type application struct {
 
 func main() {
 	app := &application{
-		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
-		itemRepository: createItemRepository(),
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
+	app.initModels()
 	app.initRouter()
 	app.addAPIRoutes()
 	app.addSwaggerRoutes()
@@ -58,16 +44,4 @@ func main() {
 	}
 
 	app.router.Run(fmt.Sprintf(":%s", port))
-}
-
-func createItemRepository() models.ItemRepository {
-	repositoryType := os.Getenv("TODO_REPOSITORY_TYPE")
-
-	if repositoryType == "Mongo" {
-		return &mongo.ItemRepository{}
-	} else if repositoryType == "Google" {
-		return &google.ItemRepository{}
-	} else {
-		return &memory.ItemRepository{}
-	}
 }

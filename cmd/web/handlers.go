@@ -25,7 +25,7 @@ func (app *application) postItemEndpoint(c *gin.Context) {
 		return
 	}
 
-	err = app.itemRepository.CreateItem(newItem)
+	err = app.itemModel.CreateItem(newItem)
 	if err != nil {
 		app.serverError(c.Writer, err)
 		return
@@ -51,7 +51,7 @@ func (app *application) putItemEndpoint(c *gin.Context) {
 		return
 	}
 
-	err = app.itemRepository.CreateItem(newItem)
+	err = app.itemModel.CreateItem(newItem)
 	if err != nil {
 		app.serverError(c.Writer, err)
 		return
@@ -75,8 +75,11 @@ func (app *application) getItemEndpoint(c *gin.Context) {
 		return
 	}
 
-	item, err := app.itemRepository.GetItem(id)
-	if err != nil {
+	item, err := app.itemModel.GetItem(id)
+	if err == models.ErrNoRecord {
+		app.notFound(c.Writer)
+		return
+	} else if err != nil {
 		app.serverError(c.Writer, err)
 		return
 	}
@@ -92,7 +95,7 @@ func (app *application) getItemEndpoint(c *gin.Context) {
 // @Success 200 {array} models.Item
 // @Router / [get]
 func (app *application) getItemsEndpoint(c *gin.Context) {
-	items, err := app.itemRepository.GetItems()
+	items, err := app.itemModel.GetItems()
 	if err != nil {
 		app.serverError(c.Writer, err)
 	} else {
@@ -124,7 +127,7 @@ func (app *application) updateItemEndpoint(c *gin.Context) {
 	}
 
 	updatedItem.ID = id
-	err = app.itemRepository.UpdateItem(updatedItem)
+	err = app.itemModel.UpdateItem(updatedItem)
 	if err != nil {
 		app.serverError(c.Writer, err)
 		return
@@ -148,7 +151,7 @@ func (app *application) deleteItemEndpoint(c *gin.Context) {
 		return
 	}
 
-	err = app.itemRepository.DeleteItem(id)
+	err = app.itemModel.DeleteItem(id)
 	if err != nil {
 		app.serverError(c.Writer, err)
 		return

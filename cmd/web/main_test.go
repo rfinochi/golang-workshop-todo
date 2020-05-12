@@ -10,7 +10,7 @@ import (
 	"os"
 	"testing"
 
-	models "github.com/rfinochi/golang-workshop-todo/pkg/models"
+	"github.com/rfinochi/golang-workshop-todo/pkg/models"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -19,10 +19,10 @@ func TestCompleteAPIInMemory(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
 
 	app := &application{
-		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
-		itemRepository: createItemRepository(),
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
+	app.initModels()
 	app.initRouter()
 	app.addAPIRoutes()
 
@@ -33,10 +33,10 @@ func TestCompleteAPIInMongo(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Mongo")
 
 	app := &application{
-		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
-		itemRepository: createItemRepository(),
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
+	app.initModels()
 	app.initRouter()
 	app.addAPIRoutes()
 
@@ -48,10 +48,10 @@ func TestConnectionErrorMongo(t *testing.T) {
 	os.Setenv("TODO_MONGO_URI", "mongodb://bad:99999")
 
 	app := &application{
-		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
-		itemRepository: createItemRepository(),
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
+	app.initModels()
 	app.initRouter()
 	app.addAPIRoutes()
 
@@ -70,6 +70,7 @@ func TestSwagger(t *testing.T) {
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
 		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
+	app.initModels()
 	app.initRouter()
 	app.addSwaggerRoutes()
 
@@ -83,10 +84,10 @@ func TestBadRequestError(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
 
 	app := &application{
-		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
-		itemRepository: createItemRepository(),
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
+	app.initModels()
 	app.initRouter()
 	app.addAPIRoutes()
 
@@ -99,29 +100,32 @@ func TestNotFoundError(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
 
 	app := &application{
-		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
-		itemRepository: createItemRepository(),
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
+	app.initModels()
 	app.initRouter()
 	app.addAPIRoutes()
 
 	doError(app.router, t, "GET", "/api/bad", "", http.StatusNotFound)
 	doError(app.router, t, "DELETE", "/api/bad", "", http.StatusNotFound)
 	doError(app.router, t, "PATCH", "/api/bad", "", http.StatusNotFound)
+
 	doError(app.router, t, "GET", "/api/-1", "", http.StatusNotFound)
 	doError(app.router, t, "DELETE", "/api/-1", "", http.StatusNotFound)
 	doError(app.router, t, "PATCH", "/api/-1", "", http.StatusNotFound)
+
+	doError(app.router, t, "GET", "/api/4", "", http.StatusNotFound)
 }
 
 func TestPageNotFoundError(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
 
 	app := &application{
-		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
-		itemRepository: createItemRepository(),
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
+	app.initModels()
 	app.initRouter()
 
 	doError(app.router, t, "GET", "/api/1", "", http.StatusNotFound)
@@ -131,10 +135,10 @@ func TestInternalServerError(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Google")
 
 	app := &application{
-		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
-		itemRepository: createItemRepository(),
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
 	}
+	app.initModels()
 	app.initRouter()
 	app.addAPIRoutes()
 

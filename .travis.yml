@@ -19,12 +19,12 @@ before_deploy:
 - rm ./LICENSE
 - rm ./README.md
 - rm ./.travis.yml
+- cp ./cmd/web/application.go ./application.go
 - cp ./cmd/web/handlers.go ./handlers.go
-- cp ./cmd/web/helpers.go ./helpers.go
 - cp ./cmd/web/main.go ./main.go
 - cp ./cmd/web/routes.go ./routes.go
+- rm ./cmd/web/application.go
 - rm ./cmd/web/handlers.go
-- rm ./cmd/web/helpers.go
 - rm ./cmd/web/main_test.go
 - rm ./cmd/web/main.go
 - rm ./cmd/web/routes.go
