@@ -45,7 +45,7 @@ func TestCompleteAPIInMongo(t *testing.T) {
 
 func TestConnectionErrorMongo(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Mongo")
-	os.Setenv("TODO_MONGO_URI", "mongodb://db:27017")
+	os.Setenv("TODO_MONGO_URI", "mongodb://bad:27017")
 
 	app := &application{
 		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
