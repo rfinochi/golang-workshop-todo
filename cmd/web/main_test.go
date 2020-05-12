@@ -43,6 +43,21 @@ func TestCompleteAPIInMongo(t *testing.T) {
 	doAllAPIRequests(t, app)
 }
 
+func TestConnectionErrorMongo(t *testing.T) {
+	os.Setenv("TODO_REPOSITORY_TYPE", "Mongo")
+	os.Setenv("TODO_MONGO_URI", "mongodb://db:27017")
+
+	app := &application{
+		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog:       log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		itemRepository: createItemRepository(),
+	}
+	app.initRouter()
+	app.addAPIRoutes()
+
+	doError(app.router, t, "GET", "/api/1", "", http.StatusInternalServerError)
+}
+
 func TestSwagger(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
 
@@ -106,6 +121,7 @@ func TestPageNotFoundError(t *testing.T) {
 
 	doError(app.router, t, "GET", "/api/1", "", http.StatusNotFound)
 }
+
 func TestInternalServerError(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Google")
 
