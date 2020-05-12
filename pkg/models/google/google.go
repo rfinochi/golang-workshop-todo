@@ -24,11 +24,6 @@ func (ItemRepository) CreateItem(newItem models.Item) (err error) {
 
 	key := datastore.IDKey(entityName, int64(newItem.ID), nil)
 	_, err = client.Put(ctx, key, &newItem)
-	if err != nil {
-		return
-	}
-
-	err = client.Close()
 
 	return
 }
@@ -42,11 +37,6 @@ func (ItemRepository) UpdateItem(item models.Item) (err error) {
 
 	key := datastore.IDKey(entityName, int64(item.ID), nil)
 	_, err = client.Put(ctx, key, &item)
-	if err != nil {
-		return
-	}
-
-	err = client.Close()
 
 	return
 }
@@ -71,8 +61,6 @@ func (ItemRepository) GetItems() (items []models.Item, err error) {
 		items = append(items, item)
 	}
 
-	err = client.Close()
-
 	return
 }
 
@@ -87,11 +75,7 @@ func (ItemRepository) GetItem(id int) (item models.Item, err error) {
 	err = client.Get(ctx, key, &item)
 	if err == datastore.ErrNoSuchEntity {
 		err = nil
-	} else if err != nil {
-		return
 	}
-
-	err = client.Close()
 
 	return
 }
@@ -105,11 +89,6 @@ func (ItemRepository) DeleteItem(id int) (err error) {
 
 	key := datastore.IDKey(entityName, int64(id), nil)
 	err = client.Delete(ctx, key)
-	if err != nil {
-		return
-	}
-
-	err = client.Close()
 
 	return
 }
@@ -118,11 +97,6 @@ func connnectToDatastore() (ctx context.Context, client *datastore.Client, err e
 	ctx = context.Background()
 
 	client, err = datastore.NewClient(ctx, "golang-workshop-todo")
-	if err != nil {
-		return
-	}
-
-	err = client.Close()
 
 	return
 }
