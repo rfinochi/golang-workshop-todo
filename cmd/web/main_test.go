@@ -31,7 +31,6 @@ func TestCompleteAPIInMemory(t *testing.T) {
 
 func TestCompleteAPIInMongo(t *testing.T) {
 	os.Setenv("TODO_REPOSITORY_TYPE", "Mongo")
-	os.Setenv("TODO_MONGO_URI", "mongodb://localhost:27017")
 
 	app := &application{
 		infoLog:        log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
@@ -57,6 +56,11 @@ func TestConnectionErrorMongo(t *testing.T) {
 	app.addAPIRoutes()
 
 	doError(app.router, t, "GET", "/api/1", "", http.StatusInternalServerError)
+	doError(app.router, t, "GET", "/api/", "", http.StatusInternalServerError)
+	doError(app.router, t, "PUT", "/api/", `{"id":1,"title":"Test_1","isdone":true}`, http.StatusInternalServerError)
+	doError(app.router, t, "POST", "/api/", `{"id":1,"title":"Test_1","isdone":true}`, http.StatusInternalServerError)
+	doError(app.router, t, "PATCH", "/api/1", `{"id":1,"title":"Test_1","isdone":true}`, http.StatusInternalServerError)
+	doError(app.router, t, "DELETE", "/api/1", "", http.StatusInternalServerError)
 }
 
 func TestSwagger(t *testing.T) {
