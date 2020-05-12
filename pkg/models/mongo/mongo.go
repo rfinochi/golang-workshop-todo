@@ -105,9 +105,6 @@ func (ItemRepository) DeleteItem(id int) (err error) {
 
 	collection := client.Database("todo").Collection("items")
 	_, err = collection.DeleteMany(ctx, models.Item{ID: id})
-	if err != nil {
-		return
-	}
 
 	disconnect(ctx, client)
 
