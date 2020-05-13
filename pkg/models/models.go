@@ -39,8 +39,14 @@ func (model ItemModel) UpdateItem(updatedItem Item) error {
 }
 
 // GetItems godoc
-func (model ItemModel) GetItems() ([]Item, error) {
-	return model.Repository.GetItems()
+func (model ItemModel) GetItems() (i []Item, e error) {
+	i, e = model.Repository.GetItems()
+
+	if i == nil && e == nil {
+		i = []Item{}
+	}
+
+	return
 }
 
 // GetItem godoc
