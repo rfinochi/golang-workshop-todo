@@ -48,7 +48,7 @@ func (ItemRepository) GetItems() (items []models.Item, err error) {
 		return
 	}
 
-	query := datastore.NewQuery("todoitem").Order("ID")
+	query := datastore.NewQuery("todoitem") //.Order("ID")
 	it := client.Run(ctx, query)
 	for {
 		var item models.Item
