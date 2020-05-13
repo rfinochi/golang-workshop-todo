@@ -45,6 +45,6 @@ services:
 
 deploy:
   - provider: gae
-    cleanup: true
+    cleanup: false
     keyfile: client-secret.json
     project: golang-workshop-todo
