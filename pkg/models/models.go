@@ -42,9 +42,9 @@ func (model ItemModel) UpdateItem(updatedItem Item) error {
 func (model ItemModel) GetItems() (i []Item, e error) {
 	i, e = model.Repository.GetItems()
 
-	if i == nil && e == nil {
-		i = []Item{}
-	}
+	// if i == nil && e == nil {
+	// 	i = []Item{}
+	// }
 
 	return
 }
