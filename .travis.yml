@@ -48,6 +48,7 @@ services:
   - mongodb
 
 deploy:
+  cleanup: true
   provider: gae
   keyfile: client-secret.json
   project: golang-workshop-todo
