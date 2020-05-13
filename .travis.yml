@@ -1,3 +1,7 @@
+os: linux
+arch: arm64
+dist: xenial
+
 language: go
 
 go:
@@ -44,7 +48,6 @@ services:
   - mongodb
 
 deploy:
-  skip_cleanup: true
   provider: gae
   keyfile: client-secret.json
   project: golang-workshop-todo
