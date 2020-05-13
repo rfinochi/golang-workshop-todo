@@ -11,31 +11,23 @@ type Item struct {
 
 var (
 	// ErrNoRecord godoc
-	ErrNoRecord = errors.New("no matching record found")
+	ErrNoRecord = errors.New("No matching record found")
+	// ErrRecordExist godoc
+	ErrRecordExist = errors.New("Record already exists")
 )
 
 // ItemRepository godoc
 type ItemRepository interface {
-	CreateItem(Item) error
-	UpdateItem(Item) error
 	GetItems() ([]Item, error)
 	GetItem(int) (Item, error)
+	CreateItem(Item) error
+	UpdateItem(Item) error
 	DeleteItem(int) error
 }
 
 // ItemModel godoc
 type ItemModel struct {
 	Repository ItemRepository
-}
-
-// CreateItem godoc
-func (model ItemModel) CreateItem(newItem Item) error {
-	return model.Repository.CreateItem(newItem)
-}
-
-// UpdateItem godoc
-func (model ItemModel) UpdateItem(updatedItem Item) error {
-	return model.Repository.UpdateItem(updatedItem)
 }
 
 // GetItems godoc
@@ -58,6 +50,28 @@ func (model ItemModel) GetItem(id int) (i Item, e error) {
 	}
 
 	return
+}
+
+// CreateItem godoc
+func (model ItemModel) CreateItem(newItem Item) error {
+	i, _ := model.Repository.GetItem(newItem.ID)
+
+	if i.ID == newItem.ID {
+		return ErrRecordExist
+	}
+
+	return model.Repository.CreateItem(newItem)
+}
+
+// UpdateItem godoc
+func (model ItemModel) UpdateItem(updatedItem Item) error {
+	i, e := model.Repository.GetItem(updatedItem.ID)
+
+	if i == (Item{}) && e == nil {
+		return ErrNoRecord
+	}
+
+	return model.Repository.UpdateItem(updatedItem)
 }
 
 // DeleteItem godoc

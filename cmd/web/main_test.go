@@ -150,6 +150,24 @@ func TestInternalServerError(t *testing.T) {
 	doError(app.router, t, "DELETE", "/api/1", "", http.StatusInternalServerError)
 }
 
+func TestValidations(t *testing.T) {
+	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
+
+	app := &application{
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+	}
+	app.initModels()
+	app.initRouter()
+	app.addAPIRoutes()
+
+	doPostItem(app.router, t, "POST", `{"id":8,"title":"Test_87","isdone":true}`)
+
+	doError(app.router, t, "POST", "/api/", `{"id":8,"title":"Test_8","isdone":true}`, http.StatusConflict)
+	doError(app.router, t, "PUT", "/api/", `{"id":8,"title":"Test_8","isdone":true}`, http.StatusConflict)
+	doError(app.router, t, "PATCH", "/api/9", `{"id":9,"title":"Test_9","isdone":true}`, http.StatusNotFound)
+}
+
 func doAllAPIRequests(t *testing.T, a *application) {
 	doCleanUp(a.router, t)
 

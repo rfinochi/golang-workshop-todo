@@ -15,32 +15,6 @@ const entityName string = "todoitem"
 type ItemRepository struct {
 }
 
-// CreateItem godoc
-func (ItemRepository) CreateItem(newItem models.Item) (err error) {
-	ctx, client, err := connnectToDatastore()
-	if err != nil {
-		return
-	}
-
-	key := datastore.IDKey(entityName, int64(newItem.ID), nil)
-	_, err = client.Put(ctx, key, &newItem)
-
-	return
-}
-
-// UpdateItem godoc
-func (ItemRepository) UpdateItem(item models.Item) (err error) {
-	ctx, client, err := connnectToDatastore()
-	if err != nil {
-		return
-	}
-
-	key := datastore.IDKey(entityName, int64(item.ID), nil)
-	_, err = client.Put(ctx, key, &item)
-
-	return
-}
-
 // GetItems godoc
 func (ItemRepository) GetItems() (items []models.Item, err error) {
 	ctx, client, err := connnectToDatastore()
@@ -76,6 +50,32 @@ func (ItemRepository) GetItem(id int) (item models.Item, err error) {
 	if err == datastore.ErrNoSuchEntity {
 		err = nil
 	}
+
+	return
+}
+
+// CreateItem godoc
+func (ItemRepository) CreateItem(newItem models.Item) (err error) {
+	ctx, client, err := connnectToDatastore()
+	if err != nil {
+		return
+	}
+
+	key := datastore.IDKey(entityName, int64(newItem.ID), nil)
+	_, err = client.Put(ctx, key, &newItem)
+
+	return
+}
+
+// UpdateItem godoc
+func (ItemRepository) UpdateItem(item models.Item) (err error) {
+	ctx, client, err := connnectToDatastore()
+	if err != nil {
+		return
+	}
+
+	key := datastore.IDKey(entityName, int64(item.ID), nil)
+	_, err = client.Put(ctx, key, &item)
 
 	return
 }

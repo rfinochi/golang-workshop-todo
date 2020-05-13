@@ -8,6 +8,25 @@ var items = []models.Item{}
 type ItemRepository struct {
 }
 
+// GetItems godoc
+func (ItemRepository) GetItems() ([]models.Item, error) {
+	return items, nil
+}
+
+// GetItem godoc
+func (ItemRepository) GetItem(id int) (models.Item, error) {
+	var result models.Item
+
+	for _, item := range items {
+		if item.ID == id {
+			result = item
+			break
+		}
+	}
+
+	return result, nil
+}
+
 // CreateItem godoc
 func (ItemRepository) CreateItem(newItem models.Item) error {
 	items = append(items, newItem)
@@ -26,25 +45,6 @@ func (ItemRepository) UpdateItem(updatedItem models.Item) error {
 	}
 
 	return nil
-}
-
-// GetItems godoc
-func (ItemRepository) GetItems() ([]models.Item, error) {
-	return items, nil
-}
-
-// GetItem godoc
-func (ItemRepository) GetItem(id int) (models.Item, error) {
-	var result models.Item
-
-	for _, item := range items {
-		if item.ID == id {
-			result = item
-			break
-		}
-	}
-
-	return result, nil
 }
 
 // DeleteItem godoc

@@ -15,38 +15,6 @@ import (
 type ItemRepository struct {
 }
 
-// CreateItem godoc
-func (ItemRepository) CreateItem(newItem models.Item) (err error) {
-	ctx, client, err := connnect()
-	if err != nil {
-		return
-	}
-
-	collection := client.Database("todo").Collection("items")
-	_, err = collection.InsertOne(ctx, newItem)
-
-	disconnect(ctx, client)
-
-	return
-}
-
-// UpdateItem godoc
-func (ItemRepository) UpdateItem(item models.Item) (err error) {
-	update := bson.M{"$set": bson.M{"title": item.Title, "isdone": item.IsDone}}
-
-	ctx, client, err := connnect()
-	if err != nil {
-		return
-	}
-
-	collection := client.Database("todo").Collection("items")
-	_, err = collection.UpdateOne(ctx, models.Item{ID: item.ID}, update)
-
-	disconnect(ctx, client)
-
-	return
-}
-
 // GetItems godoc
 func (ItemRepository) GetItems() (items []models.Item, err error) {
 	ctx, client, err := connnect()
@@ -90,6 +58,38 @@ func (ItemRepository) GetItem(id int) (item models.Item, err error) {
 			cursor.Decode(&item)
 		}
 	}
+
+	disconnect(ctx, client)
+
+	return
+}
+
+// CreateItem godoc
+func (ItemRepository) CreateItem(newItem models.Item) (err error) {
+	ctx, client, err := connnect()
+	if err != nil {
+		return
+	}
+
+	collection := client.Database("todo").Collection("items")
+	_, err = collection.InsertOne(ctx, newItem)
+
+	disconnect(ctx, client)
+
+	return
+}
+
+// UpdateItem godoc
+func (ItemRepository) UpdateItem(item models.Item) (err error) {
+	update := bson.M{"$set": bson.M{"title": item.Title, "isdone": item.IsDone}}
+
+	ctx, client, err := connnect()
+	if err != nil {
+		return
+	}
+
+	collection := client.Database("todo").Collection("items")
+	_, err = collection.UpdateOne(ctx, models.Item{ID: item.ID}, update)
 
 	disconnect(ctx, client)
 
