@@ -14,14 +14,14 @@ import (
 )
 
 func tokenAuthMiddleware(errorLog *log.Logger) gin.HandlerFunc {
-	requiredToken := os.Getenv(common.ApiTokenEnvVarName)
+	requiredToken := os.Getenv(common.APITokenEnvVarName)
 
 	if requiredToken == "" {
-		errorLog.Fatal("Please set environment variable ", common.ApiTokenEnvVarName)
+		errorLog.Fatal("Please set environment variable ", common.APITokenEnvVarName)
 	}
 
 	return func(c *gin.Context) {
-		token := c.Request.Header.Get(common.ApiTokenHeaderName)
+		token := c.Request.Header.Get(common.APITokenHeaderName)
 
 		if token == "" {
 			common.RespondError(c, http.StatusUnauthorized, "API token required")

@@ -34,9 +34,9 @@ func main() {
 
 	app.infoLog.Printf("Env %s '%s'", common.PortEnvVarName, os.Getenv(common.PortEnvVarName))
 	app.infoLog.Printf("Env %s '%s'", common.PortEnvVarName2, os.Getenv(common.PortEnvVarName2))
-	app.infoLog.Printf("Env %s '%s'", common.ApiTokenEnvVarName, os.Getenv(common.ApiTokenEnvVarName))
+	app.infoLog.Printf("Env %s '%s'", common.APITokenEnvVarName, os.Getenv(common.APITokenEnvVarName))
 	app.infoLog.Printf("Env %s '%s'", common.RepositoryMongoURIEnvVarName, os.Getenv(common.RepositoryMongoURIEnvVarName))
-	app.infoLog.Printf("Env %s '%s'", common.ApiTokenEnvVarName, os.Getenv(common.ApiTokenEnvVarName))
+	app.infoLog.Printf("Env %s '%s'", common.APITokenEnvVarName, os.Getenv(common.APITokenEnvVarName))
 
 	port := os.Getenv(common.PortEnvVarName)
 	if port == "" {
