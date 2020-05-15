@@ -3,10 +3,10 @@ package google
 import (
 	"context"
 
-	"github.com/rfinochi/golang-workshop-todo/pkg/models"
-
 	"cloud.google.com/go/datastore"
 	"google.golang.org/api/iterator"
+
+	"github.com/rfinochi/golang-workshop-todo/pkg/models"
 )
 
 const entityName string = "todoitem"

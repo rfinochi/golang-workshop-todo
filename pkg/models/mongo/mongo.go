@@ -4,11 +4,12 @@ import (
 	"context"
 	"os"
 
-	"github.com/rfinochi/golang-workshop-todo/pkg/models"
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"github.com/rfinochi/golang-workshop-todo/pkg/common"
+	"github.com/rfinochi/golang-workshop-todo/pkg/models"
 )
 
 // ItemRepository godoc
@@ -128,8 +129,8 @@ func disconnect(ctx context.Context, client *mongo.Client) {
 func getURI() (uri string) {
 	var ok bool
 
-	if uri, ok = os.LookupEnv("TODO_MONGO_URI"); !ok {
-		uri = "mongodb://localhost:27017"
+	if uri, ok = os.LookupEnv(common.RepositoryMongoURIEnvVarName); !ok {
+		uri = common.RepositoryMongoURIDefault
 	}
 
 	return

@@ -3,13 +3,13 @@ package main
 import (
 	"net/http"
 
-	"github.com/rfinochi/golang-workshop-todo/docs"
-
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+
+	"github.com/rfinochi/golang-workshop-todo/docs"
 )
 
 func (app *application) initRouter() {
@@ -18,6 +18,9 @@ func (app *application) initRouter() {
 
 func (app *application) addAPIRoutes() {
 	if app.router != nil {
+		app.router.Use(revisionMiddleware(app.errorLog))
+		app.router.Use(requestIDMiddleware())
+		app.router.Use(tokenAuthMiddleware(app.errorLog))
 		app.router.Use(static.Serve("/", static.LocalFile("./ui/html", true)))
 
 		api := app.router.Group("/api")

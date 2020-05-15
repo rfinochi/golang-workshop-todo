@@ -23,14 +23,17 @@ before_deploy:
 - cp ./cmd/web/handlers.go ./handlers.go
 - cp ./cmd/web/main.go ./main.go
 - cp ./cmd/web/routes.go ./routes.go
+- cp ./cmd/web/REVISION ./REVISION
 - rm ./cmd/web/application.go
 - rm ./cmd/web/handlers_test.go
 - rm ./cmd/web/handlers.go
 - rm ./cmd/web/main_test.go
 - rm ./cmd/web/main.go
 - rm ./cmd/web/routes.go
+- rm ./cmd/web/REVISION
 - rmdir ./cmd/web
 - rmdir ./cmd
+- echo $TRAVIS_BUILD_NUMBER > REVISION
 - go get -u github.com/swaggo/swag/cmd/swag
 - swag init
 

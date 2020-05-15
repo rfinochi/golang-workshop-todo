@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/rfinochi/golang-workshop-todo/pkg/common"
 )
 
 // @title To-Do Sample API
@@ -30,15 +32,17 @@ func main() {
 	app.addAPIRoutes()
 	app.addSwaggerRoutes()
 
-	app.infoLog.Printf("Env PORT '%s'", os.Getenv("PORT"))
-	app.infoLog.Printf("Env TODO_REPOSITORY_TYPE '%s'", os.Getenv("TODO_REPOSITORY_TYPE"))
-	app.infoLog.Printf("Env TODO_MONGO_URI '%s'", os.Getenv("TODO_MONGO_URI"))
+	app.infoLog.Printf("Env %s '%s'", common.PortEnvVarName, os.Getenv(common.PortEnvVarName))
+	app.infoLog.Printf("Env %s '%s'", common.PortEnvVarName2, os.Getenv(common.PortEnvVarName2))
+	app.infoLog.Printf("Env %s '%s'", common.ApiTokenEnvVarName, os.Getenv(common.ApiTokenEnvVarName))
+	app.infoLog.Printf("Env %s '%s'", common.RepositoryMongoURIEnvVarName, os.Getenv(common.RepositoryMongoURIEnvVarName))
+	app.infoLog.Printf("Env %s '%s'", common.ApiTokenEnvVarName, os.Getenv(common.ApiTokenEnvVarName))
 
-	port := os.Getenv("PORT")
+	port := os.Getenv(common.PortEnvVarName)
 	if port == "" {
-		port = os.Getenv("HTTP_PLATFORM_PORT")
+		port = os.Getenv(common.PortEnvVarName2)
 		if port == "" {
-			port = "8080"
+			port = common.PortDefault
 			app.infoLog.Printf("Starting server on port %s", port)
 		}
 	}

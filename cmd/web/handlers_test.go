@@ -10,13 +10,17 @@ import (
 	"os"
 	"testing"
 
-	"github.com/rfinochi/golang-workshop-todo/pkg/models"
-
 	"github.com/stretchr/testify/assert"
+
+	"github.com/rfinochi/golang-workshop-todo/pkg/common"
+	"github.com/rfinochi/golang-workshop-todo/pkg/models"
 )
 
+const apiToken string = "85ba6be3-b2d5-4c15-aae5-d4878dfa203c"
+
 func TestCompleteAPIInMemory(t *testing.T) {
-	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
+	os.Setenv(common.RepositoryEnvVarName, common.RepositoryMemory)
+	os.Setenv(common.ApiTokenEnvVarName, apiToken)
 
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
@@ -30,7 +34,8 @@ func TestCompleteAPIInMemory(t *testing.T) {
 }
 
 func TestCompleteAPIInMongo(t *testing.T) {
-	os.Setenv("TODO_REPOSITORY_TYPE", "Mongo")
+	os.Setenv(common.RepositoryEnvVarName, common.RepositoryMongo)
+	os.Setenv(common.ApiTokenEnvVarName, apiToken)
 
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
@@ -44,8 +49,9 @@ func TestCompleteAPIInMongo(t *testing.T) {
 }
 
 func TestConnectionErrorMongo(t *testing.T) {
-	os.Setenv("TODO_REPOSITORY_TYPE", "Mongo")
-	os.Setenv("TODO_MONGO_URI", "mongodb://bad:99999")
+	os.Setenv(common.RepositoryEnvVarName, common.RepositoryMongo)
+	os.Setenv(common.RepositoryMongoURIEnvVarName, "mongodb://bad:99999")
+	os.Setenv(common.ApiTokenEnvVarName, apiToken)
 
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
@@ -64,7 +70,8 @@ func TestConnectionErrorMongo(t *testing.T) {
 }
 
 func TestSwagger(t *testing.T) {
-	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
+	os.Setenv(common.RepositoryEnvVarName, common.RepositoryMemory)
+	os.Setenv(common.ApiTokenEnvVarName, apiToken)
 
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
@@ -81,7 +88,8 @@ func TestSwagger(t *testing.T) {
 }
 
 func TestBadRequestError(t *testing.T) {
-	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
+	os.Setenv(common.RepositoryEnvVarName, common.RepositoryMemory)
+	os.Setenv(common.ApiTokenEnvVarName, apiToken)
 
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
@@ -97,7 +105,8 @@ func TestBadRequestError(t *testing.T) {
 }
 
 func TestNotFoundError(t *testing.T) {
-	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
+	os.Setenv(common.RepositoryEnvVarName, common.RepositoryMemory)
+	os.Setenv(common.ApiTokenEnvVarName, apiToken)
 
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
@@ -119,7 +128,8 @@ func TestNotFoundError(t *testing.T) {
 }
 
 func TestPageNotFoundError(t *testing.T) {
-	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
+	os.Setenv(common.RepositoryEnvVarName, common.RepositoryMemory)
+	os.Setenv(common.ApiTokenEnvVarName, apiToken)
 
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
@@ -132,7 +142,8 @@ func TestPageNotFoundError(t *testing.T) {
 }
 
 func TestInternalServerError(t *testing.T) {
-	os.Setenv("TODO_REPOSITORY_TYPE", "Google")
+	os.Setenv(common.RepositoryEnvVarName, common.RepositoryGoogle)
+	os.Setenv(common.ApiTokenEnvVarName, apiToken)
 
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
@@ -151,7 +162,8 @@ func TestInternalServerError(t *testing.T) {
 }
 
 func TestValidations(t *testing.T) {
-	os.Setenv("TODO_REPOSITORY_TYPE", "Memory")
+	os.Setenv(common.RepositoryEnvVarName, common.RepositoryMemory)
+	os.Setenv(common.ApiTokenEnvVarName, apiToken)
 
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
@@ -274,7 +286,8 @@ func doCleanUp(r http.Handler, t *testing.T) {
 	assert.Equal(t, http.StatusOK, request.Code)
 
 	var response []models.Item
-	err := json.Unmarshal([]byte(request.Body.String()), &response)
+	s := request.Body.String()
+	err := json.Unmarshal([]byte(s), &response)
 
 	assert.Nil(t, err)
 
@@ -298,6 +311,8 @@ func doRequest(r http.Handler, method string, path string, payload string) *http
 	} else {
 		req, _ = http.NewRequest(method, path, nil)
 	}
+
+	req.Header.Set(common.ApiTokenHeaderName, apiToken)
 
 	w := httptest.NewRecorder()
 

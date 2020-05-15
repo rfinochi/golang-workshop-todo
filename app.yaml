@@ -4,6 +4,7 @@ env_variables:
   GOLANGORG_CHECK_COUNTRY: true
   GIN_MODE: release
   TODO_REPOSITORY_TYPE: 'Google'
+  TODO_API_TOKEN: '85ba6be3-b2d5-4c15-aae5-d4878dfa203c'
 
 handlers:
 - url: /.*

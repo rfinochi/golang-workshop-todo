@@ -4,9 +4,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/rfinochi/golang-workshop-todo/pkg/models"
-
 	"github.com/gin-gonic/gin"
+
+	"github.com/rfinochi/golang-workshop-todo/pkg/common"
+	"github.com/rfinochi/golang-workshop-todo/pkg/models"
 )
 
 // getItemEndpoint godoc
@@ -32,8 +33,7 @@ func (app *application) getItemEndpoint(c *gin.Context) {
 		return
 	}
 
-	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusOK, item)
+	common.RespondOkWithData(c, item)
 }
 
 // getItemsEndpoint godoc
@@ -47,7 +47,7 @@ func (app *application) getItemsEndpoint(c *gin.Context) {
 	if err != nil {
 		app.serverError(c.Writer, err)
 	} else {
-		c.JSON(http.StatusOK, items)
+		common.RespondOkWithData(c, items)
 	}
 }
 
@@ -76,8 +76,7 @@ func (app *application) postItemEndpoint(c *gin.Context) {
 		return
 	}
 
-	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusCreated, gin.H{"message": "OK"})
+	common.RespondCreated(c)
 }
 
 // putItemEndpoint godoc
@@ -105,8 +104,7 @@ func (app *application) putItemEndpoint(c *gin.Context) {
 		return
 	}
 
-	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusCreated, gin.H{"message": "OK"})
+	common.RespondCreated(c)
 }
 
 // updateItemEndpoint godoc
@@ -142,8 +140,7 @@ func (app *application) updateItemEndpoint(c *gin.Context) {
 		return
 	}
 
-	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusOK, gin.H{"message": "OK"})
+	common.RespondOk(c)
 }
 
 // deleteItemEndpoint godoc
@@ -169,6 +166,5 @@ func (app *application) deleteItemEndpoint(c *gin.Context) {
 		return
 	}
 
-	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusOK, gin.H{"message": "OK"})
+	common.RespondOk(c)
 }

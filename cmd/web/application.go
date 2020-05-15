@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/rfinochi/golang-workshop-todo/pkg/common"
 	"github.com/rfinochi/golang-workshop-todo/pkg/models"
 	"github.com/rfinochi/golang-workshop-todo/pkg/models/google"
 	"github.com/rfinochi/golang-workshop-todo/pkg/models/memory"
@@ -25,11 +26,11 @@ type application struct {
 func (app *application) initModels() {
 	app.itemModel = &models.ItemModel{}
 
-	repositoryType := os.Getenv("TODO_REPOSITORY_TYPE")
+	repositoryType := os.Getenv(common.RepositoryEnvVarName)
 
-	if repositoryType == "Mongo" {
+	if repositoryType == common.RepositoryMongo {
 		app.itemModel.Repository = &mongo.ItemRepository{}
-	} else if repositoryType == "Google" {
+	} else if repositoryType == common.RepositoryGoogle {
 		app.itemModel.Repository = &google.ItemRepository{}
 	} else {
 		app.itemModel.Repository = &memory.ItemRepository{}
