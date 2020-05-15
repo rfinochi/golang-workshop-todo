@@ -166,6 +166,7 @@ func TestValidations(t *testing.T) {
 	doError(app.router, t, "POST", "/api/", `{"id":8,"title":"Test_8","isdone":true}`, http.StatusConflict)
 	doError(app.router, t, "PUT", "/api/", `{"id":8,"title":"Test_8","isdone":true}`, http.StatusConflict)
 	doError(app.router, t, "PATCH", "/api/9", `{"id":9,"title":"Test_9","isdone":true}`, http.StatusNotFound)
+	doError(app.router, t, "DELETE", "/api/9", "", http.StatusNotFound)
 }
 
 func doAllAPIRequests(t *testing.T, a *application) {

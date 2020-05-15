@@ -161,7 +161,10 @@ func (app *application) deleteItemEndpoint(c *gin.Context) {
 	}
 
 	err = app.itemModel.DeleteItem(id)
-	if err != nil {
+	if err == models.ErrNoRecord {
+		app.notFound(c.Writer)
+		return
+	} else if err != nil {
 		app.serverError(c.Writer, err)
 		return
 	}

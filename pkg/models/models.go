@@ -76,5 +76,11 @@ func (model ItemModel) UpdateItem(updatedItem Item) error {
 
 // DeleteItem godoc
 func (model ItemModel) DeleteItem(id int) error {
+	i, e := model.Repository.GetItem(id)
+
+	if i == (Item{}) && e == nil {
+		return ErrNoRecord
+	}
+
 	return model.Repository.DeleteItem(id)
 }
