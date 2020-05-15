@@ -141,6 +141,22 @@ func TestPageNotFoundError(t *testing.T) {
 	doError(app.router, t, "GET", "/api/1", "", http.StatusNotFound)
 }
 
+func TestRequestWithoutAPIToken(t *testing.T) {
+	os.Setenv(common.RepositoryEnvVarName, common.RepositoryMemory)
+	os.Setenv(common.APITokenEnvVarName, apiToken)
+
+	app := &application{
+		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
+		errorLog: log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+	}
+	app.initModels()
+	app.initRouter()
+	app.addAPIRoutes()
+
+	doErrorWithAPIToken(app.router, t, "GET", "/api/1", "", "", http.StatusUnauthorized)
+	doErrorWithAPIToken(app.router, t, "GET", "/api/1", "", "X", http.StatusUnauthorized)
+}
+
 func TestInternalServerError(t *testing.T) {
 	os.Setenv(common.RepositoryEnvVarName, common.RepositoryGoogle)
 	os.Setenv(common.APITokenEnvVarName, apiToken)
@@ -302,7 +318,17 @@ func doError(r http.Handler, t *testing.T, method string, path string, payload s
 	assert.Equal(t, errorCode, request.Code)
 }
 
+func doErrorWithAPIToken(r http.Handler, t *testing.T, method string, path string, token string, payload string, errorCode int) {
+	request := doRequesWithAPIToken(r, method, path, token, payload)
+
+	assert.Equal(t, errorCode, request.Code)
+}
+
 func doRequest(r http.Handler, method string, path string, payload string) *httptest.ResponseRecorder {
+	return doRequesWithAPIToken(r, method, path, apiToken, payload)
+}
+
+func doRequesWithAPIToken(r http.Handler, method string, path string, token string, payload string) *httptest.ResponseRecorder {
 	var req *http.Request
 
 	if method == "POST" || method == "PATCH" || method == "PUT" {
@@ -312,7 +338,7 @@ func doRequest(r http.Handler, method string, path string, payload string) *http
 		req, _ = http.NewRequest(method, path, nil)
 	}
 
-	req.Header.Set(common.APITokenHeaderName, apiToken)
+	req.Header.Set(common.APITokenHeaderName, token)
 
 	w := httptest.NewRecorder()
 

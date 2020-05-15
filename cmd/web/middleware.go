@@ -13,26 +13,9 @@ import (
 	"github.com/rfinochi/golang-workshop-todo/pkg/common"
 )
 
-func tokenAuthMiddleware(errorLog *log.Logger) gin.HandlerFunc {
-	requiredToken := os.Getenv(common.APITokenEnvVarName)
-
-	if requiredToken == "" {
-		errorLog.Fatal("Please set environment variable ", common.APITokenEnvVarName)
-	}
-
+func logRequestMiddleware(infoLog *log.Logger) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.Request.Header.Get(common.APITokenHeaderName)
-
-		if token == "" {
-			common.RespondError(c, http.StatusUnauthorized, "API token required")
-			return
-		}
-
-		if token != requiredToken {
-			common.RespondError(c, http.StatusUnauthorized, "Invalid API token")
-			return
-		}
-
+		infoLog.Printf("%s - %s %s %s", c.Request.RemoteAddr, c.Request.Proto, c.Request.Method, c.Request.URL.RequestURI())
 		c.Next()
 	}
 }
@@ -59,6 +42,30 @@ func revisionMiddleware(errorLog *log.Logger) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("X-Revision", revision)
+		c.Next()
+	}
+}
+
+func tokenAuthMiddleware(errorLog *log.Logger) gin.HandlerFunc {
+	requiredToken := os.Getenv(common.APITokenEnvVarName)
+
+	if requiredToken == "" {
+		errorLog.Fatal("Please set environment variable ", common.APITokenEnvVarName)
+	}
+
+	return func(c *gin.Context) {
+		token := c.Request.Header.Get(common.APITokenHeaderName)
+
+		if token == "" {
+			common.RespondError(c, http.StatusUnauthorized, "API token required")
+			return
+		}
+
+		if token != requiredToken {
+			common.RespondError(c, http.StatusUnauthorized, "Invalid API token (request one via e-mail to rodolfof@shockbyte.software")
+			return
+		}
+
 		c.Next()
 	}
 }

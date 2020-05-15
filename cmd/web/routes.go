@@ -18,6 +18,7 @@ func (app *application) initRouter() {
 
 func (app *application) addAPIRoutes() {
 	if app.router != nil {
+		app.router.Use(logRequestMiddleware(app.infoLog))
 		app.router.Use(revisionMiddleware(app.errorLog))
 		app.router.Use(requestIDMiddleware())
 		app.router.Use(tokenAuthMiddleware(app.errorLog))
