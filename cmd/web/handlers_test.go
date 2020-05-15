@@ -81,7 +81,7 @@ func TestSwagger(t *testing.T) {
 	app.initRouter()
 	app.addSwaggerRoutes()
 
-	request := doRequest(app.router, "GET", "/api-docs", "")
+	request := doRequesWithAPIToken(app.router, "GET", "/api-docs", "", "")
 
 	assert.Equal(t, 301, request.Code)
 	assert.Greater(t, len(request.Body.String()), 0)

@@ -54,18 +54,19 @@ func tokenAuthMiddleware(errorLog *log.Logger) gin.HandlerFunc {
 	}
 
 	return func(c *gin.Context) {
-		token := c.Request.Header.Get(common.APITokenHeaderName)
+		if !strings.Contains(c.Request.RequestURI, "api-docs") {
+			token := c.Request.Header.Get(common.APITokenHeaderName)
 
-		if token == "" {
-			common.RespondError(c, http.StatusUnauthorized, "API token required")
-			return
+			if token == "" {
+				common.RespondError(c, http.StatusUnauthorized, "API token required")
+				return
+			}
+
+			if token != requiredToken {
+				common.RespondError(c, http.StatusUnauthorized, "Invalid API token (request one via e-mail to rodolfof@shockbyte.software")
+				return
+			}
 		}
-
-		if token != requiredToken {
-			common.RespondError(c, http.StatusUnauthorized, "Invalid API token (request one via e-mail to rodolfof@shockbyte.software")
-			return
-		}
-
 		c.Next()
 	}
 }
