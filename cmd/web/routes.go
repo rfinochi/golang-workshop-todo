@@ -21,7 +21,7 @@ func (app *application) addAPIRoutes() {
 		app.router.Use(logRequestMiddleware(app.infoLog))
 		app.router.Use(revisionMiddleware(app.errorLog))
 		app.router.Use(requestIDMiddleware())
-		//app.router.Use(tokenAuthMiddleware(app.errorLog))
+		app.router.Use(tokenAuthMiddleware(app.errorLog))
 		app.router.Use(static.Serve("/", static.LocalFile("./ui/html", true)))
 
 		api := app.router.Group("/api")
