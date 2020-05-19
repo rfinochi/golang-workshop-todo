@@ -31,4 +31,10 @@ const RepositoryMongoURIDefault string = "mongodb://localhost:27017"
 const APITokenEnvVarName string = "TODO_API_TOKEN"
 
 // APITokenHeaderName godoc
-const APITokenHeaderName string = "X-Todo-Api-Authorization-Token"
+const APITokenHeaderName string = "X-Todo-API-Authorization-Token"
+
+// APIRevisionHeaderName godoc
+const APIRevisionHeaderName string = "X-Todo-API-Revision"
+
+// APIRequestIDHeaderName godoc
+const APIRequestIDHeaderName string = "X-Todo-API-Request-ID"

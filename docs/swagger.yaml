@@ -25,11 +25,24 @@ paths:
   /:
     get:
       description: Get all to-do items from the data store
+      parameters:
+      - description: Authorization Token
+        in: header
+        name: X-Todo-API-Authorization-Token
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
+          headers:
+            X-Todo-API-Request-ID:
+              description: API Request Id
+              type: string
+            X-Todo-API-Revision:
+              description: API Revision Number
+              type: string
           schema:
             items:
               $ref: '#/definitions/models.Item'
@@ -46,11 +59,23 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.Item'
+      - description: Authorization Token
+        in: header
+        name: X-Todo-API-Authorization-Token
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "201":
           description: '{\"message\": \"Ok\"}'
+          headers:
+            X-Todo-API-Request-ID:
+              description: API Request Id
+              type: string
+            X-Todo-API-Revision:
+              description: API Revision Number
+              type: string
           schema:
             type: string
       summary: Create a to-do item
@@ -65,11 +90,23 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.Item'
+      - description: Authorization Token
+        in: header
+        name: X-Todo-API-Authorization-Token
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "201":
           description: '{\"message\": \"Ok\"}'
+          headers:
+            X-Todo-API-Request-ID:
+              description: API Request Id
+              type: string
+            X-Todo-API-Revision:
+              description: API Revision Number
+              type: string
           schema:
             type: string
       summary: Create a to-do item
@@ -82,11 +119,23 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Authorization Token
+        in: header
+        name: X-Todo-API-Authorization-Token
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: '{\"message\": \"Ok\"}'
+          headers:
+            X-Todo-API-Request-ID:
+              description: API Request Id
+              type: string
+            X-Todo-API-Revision:
+              description: API Revision Number
+              type: string
           schema:
             type: string
       summary: Delete a to-do item
@@ -98,11 +147,23 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Authorization Token
+        in: header
+        name: X-Todo-API-Authorization-Token
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
+          headers:
+            X-Todo-API-Request-ID:
+              description: API Request Id
+              type: string
+            X-Todo-API-Revision:
+              description: API Revision Number
+              type: string
           schema:
             $ref: '#/definitions/models.Item'
       summary: Get a to-do item
@@ -122,11 +183,23 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.Item'
+      - description: Authorization Token
+        in: header
+        name: X-Todo-API-Authorization-Token
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: '{\"message\": \"Ok\"}'
+          headers:
+            X-Todo-API-Request-ID:
+              description: API Request Id
+              type: string
+            X-Todo-API-Revision:
+              description: API Revision Number
+              type: string
           schema:
             type: string
       summary: Update a to-do item

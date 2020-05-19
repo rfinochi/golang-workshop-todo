@@ -22,7 +22,7 @@ func logRequestMiddleware(infoLog *log.Logger) gin.HandlerFunc {
 
 func requestIDMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Writer.Header().Set("X-Request-Id", uuid.NewV4().String())
+		c.Writer.Header().Set(common.APIRequestIDHeaderName, uuid.NewV4().String())
 		c.Next()
 	}
 }
@@ -41,7 +41,7 @@ func revisionMiddleware(errorLog *log.Logger) gin.HandlerFunc {
 	revision := strings.TrimSpace(string(data))
 
 	return func(c *gin.Context) {
-		c.Writer.Header().Set("X-Revision", revision)
+		c.Writer.Header().Set(common.APIRevisionHeaderName, revision)
 		c.Next()
 	}
 }

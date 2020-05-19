@@ -24,6 +24,15 @@
                     "application/json"
                 ],
                 "summary": "Get all to-do items",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization Token",
+                        "name": "X-Todo-API-Authorization-Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -31,6 +40,16 @@
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/models.Item"
+                            }
+                        },
+                        "headers": {
+                            "X-Todo-API-Request-ID": {
+                                "type": "string",
+                                "description": "API Request Id"
+                            },
+                            "X-Todo-API-Revision": {
+                                "type": "string",
+                                "description": "API Revision Number"
                             }
                         }
                     }
@@ -54,6 +73,13 @@
                         "schema": {
                             "$ref": "#/definitions/models.Item"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization Token",
+                        "name": "X-Todo-API-Authorization-Token",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -61,6 +87,16 @@
                         "description": "{\\\"message\\\": \\\"Ok\\\"}",
                         "schema": {
                             "type": "string"
+                        },
+                        "headers": {
+                            "X-Todo-API-Request-ID": {
+                                "type": "string",
+                                "description": "API Request Id"
+                            },
+                            "X-Todo-API-Revision": {
+                                "type": "string",
+                                "description": "API Revision Number"
+                            }
                         }
                     }
                 }
@@ -83,6 +119,13 @@
                         "schema": {
                             "$ref": "#/definitions/models.Item"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization Token",
+                        "name": "X-Todo-API-Authorization-Token",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -90,6 +133,16 @@
                         "description": "{\\\"message\\\": \\\"Ok\\\"}",
                         "schema": {
                             "type": "string"
+                        },
+                        "headers": {
+                            "X-Todo-API-Request-ID": {
+                                "type": "string",
+                                "description": "API Request Id"
+                            },
+                            "X-Todo-API-Revision": {
+                                "type": "string",
+                                "description": "API Revision Number"
+                            }
                         }
                     }
                 }
@@ -109,6 +162,13 @@
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization Token",
+                        "name": "X-Todo-API-Authorization-Token",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -116,6 +176,16 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.Item"
+                        },
+                        "headers": {
+                            "X-Todo-API-Request-ID": {
+                                "type": "string",
+                                "description": "API Request Id"
+                            },
+                            "X-Todo-API-Revision": {
+                                "type": "string",
+                                "description": "API Revision Number"
+                            }
                         }
                     }
                 }
@@ -133,6 +203,13 @@
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization Token",
+                        "name": "X-Todo-API-Authorization-Token",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -140,6 +217,16 @@
                         "description": "{\\\"message\\\": \\\"Ok\\\"}",
                         "schema": {
                             "type": "string"
+                        },
+                        "headers": {
+                            "X-Todo-API-Request-ID": {
+                                "type": "string",
+                                "description": "API Request Id"
+                            },
+                            "X-Todo-API-Revision": {
+                                "type": "string",
+                                "description": "API Revision Number"
+                            }
                         }
                     }
                 }
@@ -169,6 +256,13 @@
                         "schema": {
                             "$ref": "#/definitions/models.Item"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization Token",
+                        "name": "X-Todo-API-Authorization-Token",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -176,6 +270,16 @@
                         "description": "{\\\"message\\\": \\\"Ok\\\"}",
                         "schema": {
                             "type": "string"
+                        },
+                        "headers": {
+                            "X-Todo-API-Request-ID": {
+                                "type": "string",
+                                "description": "API Request Id"
+                            },
+                            "X-Todo-API-Revision": {
+                                "type": "string",
+                                "description": "API Revision Number"
+                            }
                         }
                     }
                 }
