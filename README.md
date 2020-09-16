@@ -1,6 +1,6 @@
 # Go Programming Language Workshop To-Do Sample
 
-[![Build status](https://img.shields.io/travis/rfinochi/golang-workshop-todo?style=plastic&logo=travis)](https://travis-ci.org/rfinochi/golang-workshop-todo)
+[![Build status](https://img.shields.io/travis/com/rfinochi/golang-workshop-todo?style=plastic&logo=travis)](https://travis-ci.com/rfinochi/golang-workshop-todo)
 [![Coverage Status](https://img.shields.io/coveralls/github/rfinochi/golang-workshop-todo?style=plastic&logo=coveralls)](https://coveralls.io/github/rfinochi/golang-workshop-todo)
 [![Scrutinizer code quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/rfinochi/golang-workshop-todo?style=plastic&logo=scrutinizer)](https://scrutinizer-ci.com/g/rfinochi/golang-workshop-todo/?branch=master)
 [![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/rfinochi_golang-workshop-todo?server=https%3A%2F%2Fsonarcloud.io&style=plastic)](https://sonarcloud.io/dashboard?id=rfinochi_golang-workshop-todo)
