@@ -5,6 +5,15 @@ COPY . /app
 WORKDIR /app
 
 RUN go test ./cmd/web -run TestCompleteAPIInMemory
+RUN	go test ./cmd/web -run TestCompleteAPIInMemory
+RUN go test ./cmd/web -run TestMain
+RUN go test ./cmd/web -run TestSwagger
+RUN go test ./cmd/web -run TestBadRequestError
+RUN go test ./cmd/web -run TestNotFoundError
+RUN go test ./cmd/web -run TestPageNotFoundError
+RUN go test ./cmd/web -run TestRequestWithoutAPIToken
+RUN go test ./cmd/web -run TestInternalServerError
+RUN go test ./cmd/web -run TestValidations
 
 ENV PORT 82 
 ENV TODO_REPOSITORY_TYPE Mongo 
