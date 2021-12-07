@@ -1,4 +1,4 @@
-runtime: go115
+runtime: go116
 
 env_variables:
   GOLANGORG_CHECK_COUNTRY: true
