@@ -16,8 +16,8 @@
 
 ## Go Programming Language Workshop Resources
 
-* [Online Slide Decks](https://decks.golang-workshop.io)
-* [Slide Decks](https://github.com/rfinochi/golang-workshop-decks/tree/master/content)
+* [Online Slide Deck](https://deck.golang-workshop.io)
+* [Slide Deck](https://github.com/rfinochi/golang-workshop-deck/tree/master/content)
 * [Source Code](https://github.com/rfinochi/golang-workshop-src)
 * [To-Do Sample Web API Doc](https://todo.golang-workshop.io/api-docs/index.html)
 
