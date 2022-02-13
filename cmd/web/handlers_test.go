@@ -225,7 +225,7 @@ func doGetItem(r http.Handler, t *testing.T, id int, title string, isdone bool) 
 
 	var response models.Item
 
-	err := json.Unmarshal([]byte(request.Body.String()), &response)
+	err := json.Unmarshal(request.Body.Bytes(), &response)
 
 	assert.Nil(t, err)
 	assert.Equal(t, response.ID, id)
@@ -240,7 +240,7 @@ func doGetItems(r http.Handler, t *testing.T, title string, isdone bool, length 
 
 	var response []models.Item
 
-	err := json.Unmarshal([]byte(request.Body.String()), &response)
+	err := json.Unmarshal(request.Body.Bytes(), &response)
 
 	assert.Nil(t, err)
 	assert.Equal(t, len(response), length)
@@ -258,7 +258,7 @@ func doPostItem(r http.Handler, t *testing.T, method string, payload string) {
 
 	var response map[string]string
 
-	err := json.Unmarshal([]byte(request.Body.String()), &response)
+	err := json.Unmarshal(request.Body.Bytes(), &response)
 	value, exists := response["message"]
 
 	assert.Nil(t, err)
@@ -273,7 +273,7 @@ func doPatchItem(r http.Handler, t *testing.T, id int, payload string) {
 
 	var response map[string]string
 
-	err := json.Unmarshal([]byte(request.Body.String()), &response)
+	err := json.Unmarshal(request.Body.Bytes(), &response)
 	value, exists := response["message"]
 
 	assert.Nil(t, err)
@@ -288,7 +288,7 @@ func doDeleteItem(r http.Handler, t *testing.T, id int) {
 
 	var response map[string]string
 
-	err := json.Unmarshal([]byte(request.Body.String()), &response)
+	err := json.Unmarshal(request.Body.Bytes(), &response)
 	value, exists := response["message"]
 
 	assert.Nil(t, err)
