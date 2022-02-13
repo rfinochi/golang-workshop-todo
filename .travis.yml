@@ -1,4 +1,4 @@
-dist: bionic
+dist: focal
 arch: amd64
 
 language: go
@@ -53,7 +53,7 @@ services:
   - mongodb
 
 deploy:
-  skip_cleanup: true
   provider: gae
   keyfile: client-secret.json
   project: golang-workshop-todo
+  skip_cleanup: true
