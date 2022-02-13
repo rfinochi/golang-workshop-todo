@@ -21,7 +21,6 @@ import (
 
 // @host todo.golang-workshop.io
 // @BasePath /api
-
 func main() {
 	app := &application{
 		infoLog:  log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
