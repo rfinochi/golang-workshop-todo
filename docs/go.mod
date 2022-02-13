@@ -1,4 +1,4 @@
-module github.com/rfinochi/golang-workshop-todo/ui/docs
+module github.com/rfinochi/golang-workshop-todo/docs
 
 go 1.16
 
