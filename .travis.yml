@@ -22,12 +22,13 @@ before_deploy:
 - rm ./LICENSE
 - rm ./README.md
 - rm ./.travis.yml
+- rm ./go.mod
 - cp ./cmd/web/application.go ./application.go
 - cp ./cmd/web/handlers.go ./handlers.go
 - cp ./cmd/web/main.go ./main.go
 - cp ./cmd/web/middleware.go ./middleware.go
 - cp ./cmd/web/REVISION ./REVISION
-- cp ./cmd/web/routes.go ./routes.go
+- cp ./cmd/web/routes.bak ./routes.go
 - rm ./cmd/web/application.go
 - rm ./cmd/web/handlers_test.go
 - rm ./cmd/web/handlers.go
@@ -36,8 +37,10 @@ before_deploy:
 - rm ./cmd/web/middleware.go
 - rm ./cmd/web/REVISION
 - rm ./cmd/web/routes.go
+- rm ./cmd/web/routes.bak
 - rmdir ./cmd/web
 - rmdir ./cmd
+- mv go.bak go.mod
 - echo $TRAVIS_BUILD_NUMBER > REVISION
 - go get -u github.com/swaggo/swag/cmd/swag
 - swag init
