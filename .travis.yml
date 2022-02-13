@@ -56,4 +56,3 @@ deploy:
   provider: gae
   keyfile: client-secret.json
   project: golang-workshop-todo
-  skip_cleanup: true
