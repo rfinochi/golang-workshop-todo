@@ -9,8 +9,8 @@
 [![Swagger Validator](https://img.shields.io/swagger/valid/3.0?specUrl=https%3A%2F%2Ftodo.golang-workshop.io%2Fapi-docs%2Fdoc.json&style=plastic&logo=swagger)](https://todo.golang-workshop.io/api-docs/index.html)
 [![GitHub issues](https://img.shields.io/github/issues/rfinochi/golang-workshop-todo?style=plastic)](https://github.com/rfinochi/golang-workshop-todo)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/rfinochi/golang-workshop-todo?style=plastic)
-[![Uptime Robot status](https://img.shields.io/uptimerobot/status/m783377538-77d474a53864e824fc78e179?style=plastic)](https://todo.golang-workshop.io/api-docs/index.html)
-[![Uptime Robot ratio (30 days)](https://img.shields.io/uptimerobot/ratio/m783377538-77d474a53864e824fc78e179?style=plastic)](https://status.golang-workshop.io)
+[![Uptime Robot status](https://img.shields.io/uptimerobot/status/m783380222-4ab5d257bbae3da969584454?style=plastic)](https://todo.golang-workshop.io/api-docs/index.html)
+[![Uptime Robot ratio (30 days)](https://img.shields.io/uptimerobot/ratio/m783380222-4ab5d257bbae3da969584454?style=plastic)](https://status.golang-workshop.io)
 ![OSS Lifecycle](https://img.shields.io/osslifecycle/rfinochi/golang-workshop-todo?style=plastic)
 [![License](https://img.shields.io/github/license/rfinochi/golang-workshop-todo?style=plastic)](https://opensource.org/licenses/mit-license.php)
 
