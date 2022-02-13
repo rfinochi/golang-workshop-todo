@@ -32,5 +32,5 @@ This project also has been dockerized and the container can be built by running
 ```bash
 make docker
 ```
-## 
+
 <img src="https://blog.golang.org/gopher/gopher.png" alt="gopher" width="70"/>
