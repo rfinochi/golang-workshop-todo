@@ -8,8 +8,6 @@ import (
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-
-	"github.com/rfinochi/golang-workshop-todo/docs"
 )
 
 func (app *application) initRouter() {
@@ -36,7 +34,6 @@ func (app *application) addAPIRoutes() {
 
 func (app *application) addSwaggerRoutes() {
 	if app.router != nil {
-		docs.SwaggerInfo.Schemes = []string{"https", "http"}
 		app.router.GET("/api-docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 		app.router.GET("/api-docs", func(c *gin.Context) {
 			c.Redirect(http.StatusMovedPermanently, "./api-docs/index.html")
