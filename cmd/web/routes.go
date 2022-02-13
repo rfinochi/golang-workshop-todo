@@ -9,7 +9,8 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	"github.com/rfinochi/golang-workshop-todo/docs"
+	//"github.com/rfinochi/golang-workshop-todo/docs"
+	"./docs"
 )
 
 func (app *application) initRouter() {

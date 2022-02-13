@@ -68,4 +68,4 @@ require (
 	honnef.co/go/tools v0.1.1 // indirect
 )
 
-replace github.com/rfinochi/golang-workshop-todo/docs v0.0.0 => ./docs
+replace github.com/rfinochi/golang-workshop-todo/docs => ./docs
