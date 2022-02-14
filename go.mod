@@ -23,9 +23,13 @@ require (
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
-	github.com/gobuffalo/depgen v0.1.0 // indirect
+	github.com/gobuffalo/attrs v0.0.0-20190224210810-a9411de4debd // indirect
+	github.com/gobuffalo/depgen v0.2.0 // indirect
 	github.com/gobuffalo/genny v0.6.0 // indirect
+	github.com/gobuffalo/gitgen v0.0.0-20190315122116-cc086187d211 // indirect
 	github.com/gobuffalo/gogen v0.2.0 // indirect
+	github.com/gobuffalo/mapi v1.0.2 // indirect
+	github.com/gobuffalo/syncx v0.0.0-20190224160051-33c29581e754 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/snappy v0.0.4 // indirect
@@ -38,12 +42,13 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
+	github.com/markbates/oncer v0.0.0-20181203154359-bf2de49a0be2 // indirect
+	github.com/markbates/safe v1.0.1 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/rfinochi/golang-workshop-todo/docs v0.0.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
@@ -51,6 +56,7 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2
 	github.com/swaggo/gin-swagger v1.4.1
+	github.com/swaggo/swag v1.7.9
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/ugorji/go v1.2.6 // indirect
 	github.com/urfave/cli v1.22.5 // indirect
@@ -59,7 +65,7 @@ require (
 	github.com/xdg/stringprep v1.0.3 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
 	go.mongodb.org/mongo-driver v1.8.3
-	golang.org/x/crypto v0.0.0-20220210151621-f4118a5b28e2 // indirect
+	golang.org/x/crypto v0.0.0-20220213190939-1e6e3497d506 // indirect
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 	golang.org/x/sys v0.0.0-20220209214540-3681064d5158 // indirect
 	golang.org/x/tools v0.1.9 // indirect
@@ -70,5 +76,3 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 	honnef.co/go/tools v0.2.2 // indirect
 )
-
-replace github.com/rfinochi/golang-workshop-todo/docs => ./docs
