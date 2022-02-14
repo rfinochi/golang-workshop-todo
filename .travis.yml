@@ -26,7 +26,7 @@ before_deploy:
 - rm ./.travis.yml
 - rm ./client-secret.json.enc
 - rm ./docker-compose.yml
-- rm ./Makefiile
+- rm ./Makefile
 - rm ./Web.config
 - cp ./cmd/web/application.go ./application.go
 - cp ./cmd/web/handlers.go ./handlers.go
