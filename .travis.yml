@@ -16,12 +16,17 @@ before_install:
 
 before_deploy:
 - curl 'https://goreportcard.com/checks' -d 'repo=github.com%2Frfinochi%2Fgolang-workshop-todo'
+- rm ./.github/ISSUE_TEMPLATE/bug_report/md
 - rm ./docs/docs.go
 - rm ./docs/swagger.json
 - rm ./docs/swagger.yaml
 - rm ./LICENSE
 - rm ./README.md
 - rm ./.travis.yml
+- rm ./docker-compose.yml
+- rm ./Makefiile
+- rm ./OSSMETADATA
+- rm ./Web.config
 - cp ./cmd/web/application.go ./application.go
 - cp ./cmd/web/handlers.go ./handlers.go
 - cp ./cmd/web/main.go ./main.go
@@ -38,6 +43,8 @@ before_deploy:
 - rm ./cmd/web/routes.go
 - rmdir ./cmd/web
 - rmdir ./cmd
+- rmdir ./.github/ISSUE_TEMPLATE
+- rmdir ./.github
 - echo $TRAVIS_BUILD_NUMBER > REVISION
 - go install github.com/swaggo/swag/cmd/swag@latest
 - swag init
