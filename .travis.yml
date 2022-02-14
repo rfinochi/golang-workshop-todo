@@ -22,10 +22,11 @@ before_deploy:
 - rm ./docs/swagger.yaml
 - rm ./LICENSE
 - rm ./README.md
+- rm ./OSSMETADATA
 - rm ./.travis.yml
+- rm ./client-secret.json.enc
 - rm ./docker-compose.yml
 - rm ./Makefiile
-- rm ./OSSMETADATA
 - rm ./Web.config
 - cp ./cmd/web/application.go ./application.go
 - cp ./cmd/web/handlers.go ./handlers.go
