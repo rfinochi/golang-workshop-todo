@@ -60,7 +60,7 @@ services:
   - mongodb
 
 deploy:
-  provider: gae
   skip_cleanup: true
+  provider: gae
   keyfile: client-secret.json
   project: golang-workshop-todo
