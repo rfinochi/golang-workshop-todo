@@ -16,7 +16,7 @@ before_install:
 
 before_deploy:
 - curl 'https://goreportcard.com/checks' -d 'repo=github.com%2Frfinochi%2Fgolang-workshop-todo'
-- rm ./.github/ISSUE_TEMPLATE/bug_report/md
+- rm ./.github/ISSUE_TEMPLATE/bug_report.md
 - rm ./docs/docs.go
 - rm ./docs/swagger.json
 - rm ./docs/swagger.yaml
