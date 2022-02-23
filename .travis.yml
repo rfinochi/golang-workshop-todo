@@ -58,6 +58,7 @@ script:
 
 services:
   - mongodb
+
 deploy:
   skip_cleanup: true
   provider: gae
