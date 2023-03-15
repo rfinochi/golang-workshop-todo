@@ -10,7 +10,7 @@ git:
   depth: 1
 
 before_install:
-- go get github.com/mattn/goveralls
+- go install github.com/mattn/goveralls@latest
 - openssl aes-256-cbc -K $encrypted_8bed37950213_key -iv $encrypted_8bed37950213_iv -in client-secret.json.enc -out client-secret.json -d
 
 before_deploy:
