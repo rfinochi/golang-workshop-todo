@@ -4,7 +4,7 @@ arch: amd64
 language: go
 
 go:
-- 1.19.x
+- 1.20.x
 
 git:
   depth: 1
