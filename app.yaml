@@ -10,6 +10,8 @@ handlers:
 - url: /.*
   script: auto
 
+app_engine_apis: true
+
 #main: ./cmd/web
 
 nobuild_files: ui/html/
