@@ -1,15 +1,25 @@
+os: linux
 dist: focal
 arch: amd64
 
-language: go
+language: python
 
-go:
-- 1.20.x
+python:
+  - "3.8"
+
+env:
+  - GO_VERSION=1.21.5
 
 git:
   depth: 1
 
 before_install:
+- wget https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz
+- sudo tar -xvf go${GO_VERSION}.linux-amd64.tar.gz
+- sudo mv go /usr/local
+- export GOROOT=/usr/local/go
+- export GOPATH=$HOME/go
+- export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 - go install github.com/mattn/goveralls@latest
 - openssl aes-256-cbc -K $encrypted_8bed37950213_key -iv $encrypted_8bed37950213_iv -in client-secret.json.enc -out client-secret.json -d
 
@@ -54,16 +64,9 @@ before_script:
   - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 
 script:
+  - go version
+  - python --version
   - $GOPATH/bin/goveralls -service=travis-ci
-
-services:
-  - mongodb
-
-deploy:
-  skip_cleanup: true
-  provider: gae
-  keyfile: client-secret.json
-  project: golang-workshop-todo
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
@@ -74,3 +77,12 @@ after_failure:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
   - ./send.sh failure $WEBHOOK_URL
+
+services:
+  - mongodb
+
+deploy:
+  skip_cleanup: true
+  provider: gae
+  keyfile: client-secret.json
+  project: golang-workshop-todo
